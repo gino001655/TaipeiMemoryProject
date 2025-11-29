@@ -1,20 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 基本樣式重置 */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  :root {
+    /* 復古色系 - 老照片/舊紙張風格 */
+    --vintage-cream: #f4ecd8;
+    --vintage-paper: #e8dcc4;
+    --vintage-brown: #8b7355;
+    --vintage-dark-brown: #5c4a3a;
+    --vintage-sepia: #704214;
+    --vintage-gold: #d4a574;
+    --vintage-border: #b8956a;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    font-family: 'Noto Serif TC', serif;
+    line-height: 1.7;
+    font-weight: 400;
+    color: var(--vintage-dark-brown);
+    background: linear-gradient(to bottom, #f4ecd8, #e8dcc4);
+    background-attachment: fixed;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 復古標題字體 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Cinzel', 'Noto Serif TC', serif;
+    color: var(--vintage-sepia);
+  }
+
+  /* 自定義滾動條 - 復古風格 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--vintage-cream);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--vintage-border);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--vintage-brown);
+  }
 }
 
-#root {
-  width: 100%;
-  min-height: 100vh;
-}
+@layer utilities {
 
+  /* 復古裝飾線條 */
+  .vintage-border {
+    border: 2px solid var(--vintage-border);
+    box-shadow: inset 0 0 0 1px rgba(212, 165, 116, 0.3);
+  }
+
+  /* 老紙張質感 */
+  .vintage-paper {
+    background: var(--vintage-paper);
+    background-image:
+      linear-gradient(rgba(139, 115, 85, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 115, 85, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* 復古陰影 */
+  .vintage-shadow {
+    box-shadow:
+      0 2px 4px rgba(112, 66, 20, 0.1),
+      0 4px 12px rgba(112, 66, 20, 0.08);
+  }
+}

@@ -1,12 +1,14 @@
 import { Suspense, useEffect, useRef, useState, useMemo } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
-import { OrbitControls, Environment, useGLTF, Html } from '@react-three/drei'
+import { MapControls, Environment, useGLTF, Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { HistoricalSite } from '../types'
 
 interface ModelViewerProps {
   selectedSite?: HistoricalSite | null
   allSites?: HistoricalSite[]
+  onSiteClick?: (site: HistoricalSite) => void
+  onViewDetail?: (site: HistoricalSite) => void
   width?: string
   height?: string
 }
@@ -27,8 +29,6 @@ function Loader() {
 
 /**
  * 將經緯度轉換為3D世界座標
- * 芝山地區的中心點約為：25.102°N, 121.523°E
- * 我們需要將這個座標系映射到3D空間
  */
 function latLonToWorld3D(
   latitude: number,
@@ -37,53 +37,41 @@ function latLonToWorld3D(
   centerLat: number = 25.102,
   centerLon: number = 121.523
 ): THREE.Vector3 {
-  // 計算相對於中心點的偏移（度）
   const deltaLat = latitude - centerLat
   const deltaLon = longitude - centerLon
-
-  // 將度轉換為米（粗略估算）
-  // 1度緯度 ≈ 111,000米
-  // 1度經度（在25度緯度）≈ 111,000 * cos(25°) ≈ 100,600米
   const metersPerDegreeLat = 111000
   const metersPerDegreeLon = 111000 * Math.cos((centerLat * Math.PI) / 180)
-
-  // 轉換為米
   const x = deltaLon * metersPerDegreeLon
-  const z = -deltaLat * metersPerDegreeLat // 注意：Z軸是負的，因為通常Z軸向上
-  const y = height // Y軸是高度
-
+  const z = -deltaLat * metersPerDegreeLat
+  const y = height
   return new THREE.Vector3(x, y, z)
 }
 
 /**
- * 標記點組件 - 顯示景點位置
- * 包含紅點和範圍圓圈
+ * 標記點組件
  */
-function SiteMarker({ 
-  position, 
-  selected, 
-  site 
-}: { 
+function SiteMarker({
+  position,
+  selected,
+  site,
+  onClick,
+  onViewDetail
+}: {
   position: THREE.Vector3
   selected: boolean
   site: HistoricalSite
+  onClick?: (site: HistoricalSite) => void
+  onViewDetail?: (site: HistoricalSite) => void
 }) {
   const markerRef = useRef<THREE.Group>(null)
   const [hovered, setHovered] = useState(false)
-
-  // 標記點的基礎縮放比例（預設大小的 1/4，讓紅點與範圍圈整體縮小）
   const BASE_SCALE = 0.25
 
-  // 標記點動畫
   useFrame((state) => {
     if (markerRef.current) {
-      // 上下浮動動畫
       const time = state.clock.elapsedTime
       markerRef.current.position.y = position.y + Math.sin(time * 2) * 0.1
-      
-      // 選中時增加脈衝效果
       if (selected) {
-        // 在較小的基礎尺寸上做輕微放大脈衝
         const scale = BASE_SCALE * (1 + Math.sin(time * 4) * 0.2)
         markerRef.current.scale.setScalar(scale)
       } else {
@@ -96,54 +84,49 @@ function SiteMarker({
     <group
       ref={markerRef}
       position={[position.x, position.y, position.z]}
+      onClick={(e) => {
+        e.stopPropagation()
+        if (onClick) onClick(site)
+      }}
+      onPointerOver={() => {
+        document.body.style.cursor = 'pointer'
+        setHovered(true)
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = 'auto'
+        setHovered(false)
+      }}
     >
-      {/* 範圍圓圈 - 選中時顯示 */}
       {selected && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.5, 0]}>
           <ringGeometry args={[3, 8, 32]} />
-          <meshBasicMaterial 
-            color="#ff0000" 
-            transparent 
-            opacity={0.4}
-            side={THREE.DoubleSide}
-          />
+          <meshBasicMaterial color="#ff0000" transparent opacity={0.4} side={THREE.DoubleSide} />
         </mesh>
       )}
-      
-      {/* 紅點標記 */}
-      <mesh
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        position={[0, 0, 0]}
-      >
-        {/* 球體標記點 */}
-        {/* 半徑縮小到原本的 1/4，搭配整體縮放讓紅點視覺上小很多 */}
+      <mesh position={[0, 0, 0]}>
         <sphereGeometry args={[selected ? 0.375 : 0.2, 16, 16]} />
-        <meshStandardMaterial 
+        <meshStandardMaterial
           color={selected ? "#ff0000" : hovered ? "#ff6666" : "#cc0000"}
           emissive={selected ? "#ff0000" : "#330000"}
           emissiveIntensity={selected ? 0.5 : 0.2}
         />
       </mesh>
-
-      {/* 文字標籤 */}
-      <Html
-        position={[0, 3, 0]}
-        center
-        style={{
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        <div
-          className={`px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap transition-all ${
-            selected ? 'bg-red-600' : 'bg-gray-800 bg-opacity-70'
-          }`}
-          style={{
-            transform: 'translate3d(-50%, -50%, 0)',
-          }}
-        >
-          {site.name}
+      <Html position={[0, 3, 0]} center style={{ pointerEvents: 'none', userSelect: 'none', zIndex: selected ? 10 : 1 }}>
+        <div className="flex flex-col items-center gap-1">
+          <div className={`px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap transition-all ${selected ? 'bg-red-600' : 'bg-gray-800 bg-opacity-70'}`}>
+            {site.name}
+          </div>
+          {selected && onViewDetail && (
+            <button
+              className="mt-1 px-3 py-1 bg-white text-gray-900 text-xs rounded shadow-lg hover:bg-gray-100 pointer-events-auto transition-colors"
+              onClick={(e) => {
+                e.stopPropagation()
+                onViewDetail(site)
+              }}
+            >
+              查看詳情
+            </button>
+          )}
         </div>
       </Html>
     </group>
@@ -159,17 +142,11 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
 
   useEffect(() => {
     if (!scene || !groupRef.current) return
-
-    // 克隆場景以避免修改原始場景
     const clonedScene = scene.clone()
-
-    // 等待幾何體解碼
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (!clonedScene || !groupRef.current) return
-
         clonedScene.updateMatrixWorld(true)
-        
         if (groupRef.current) {
           groupRef.current.add(clonedScene)
           if (onLoaded) onLoaded()
@@ -187,19 +164,12 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
 function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
   const [loadedCount, setLoadedCount] = useState(0)
   const totalTiles = 100
-
-  // 生成所有tile的URL（1-100）
-  const tileUrls = useMemo(() => {
-    return Array.from({ length: totalTiles }, (_, i) => 
-      `/mountain3D/9e7dca72aae0_${i + 1}.gltf`
-    )
-  }, [])
+  const tileUrls = useMemo(() => Array.from({ length: totalTiles }, (_, i) => `/mountain3D/9e7dca72aae0_${i + 1}.gltf`), [])
 
   const handleTileLoaded = () => {
     setLoadedCount(prev => {
       const newCount = prev + 1
       if (newCount === totalTiles && onAllLoaded) {
-        // 所有tile加載完成後再等待一點時間確保渲染完成
         setTimeout(() => onAllLoaded(), 500)
       }
       return newCount
@@ -208,7 +178,7 @@ function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
 
   return (
     <>
-      {tileUrls.map((url, index) => (
+      {tileUrls.map((url) => (
         <Suspense key={url} fallback={null}>
           <TileModel url={url} onLoaded={handleTileLoaded} />
         </Suspense>
@@ -217,9 +187,7 @@ function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
         <Html center>
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-6 w-6 border border-white border-t-transparent"></div>
-            <p className="mt-3 text-xs text-white font-light tracking-wide opacity-80">
-              載入中 {loadedCount}/{totalTiles}
-            </p>
+            <p className="mt-3 text-xs text-white font-light tracking-wide opacity-80">載入中 {loadedCount}/{totalTiles}</p>
           </div>
         </Html>
       )}
@@ -228,7 +196,7 @@ function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
 }
 
 /**
- * 相機動畫控制器 - 平滑跳轉到指定位置
+ * 相機動畫控制器
  */
 function CameraAnimator({
   targetPosition,
@@ -250,22 +218,10 @@ function CameraAnimator({
   useEffect(() => {
     if (!targetPosition || !isAnimating || !controlsRef.current) return
 
-    // 記錄起始位置和目標點
     startPosition.current.copy(camera.position)
     startTarget.current.copy(controlsRef.current.target)
 
-    // 計算目標相機位置（從斜上方看向標記點）
-    const direction = new THREE.Vector3().subVectors(
-      targetPosition,
-      camera.position
-    ).normalize()
-    
-    const distance = Math.max(
-      Math.abs(targetPosition.x) * 2,
-      Math.abs(targetPosition.z) * 2,
-      20
-    )
-    
+    const distance = Math.max(Math.abs(targetPosition.x) * 2, Math.abs(targetPosition.z) * 2, 20)
     const targetCameraPos = new THREE.Vector3(
       targetPosition.x + distance * 0.5,
       targetPosition.y + distance * 0.8,
@@ -273,30 +229,15 @@ function CameraAnimator({
     )
 
     animationStartTime.current = performance.now()
-    const duration = 1500 // 1.5秒動畫
+    const duration = 1500
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - animationStartTime.current
       const progress = Math.min(elapsed / duration, 1)
+      const easeProgress = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2
 
-      // 使用緩動函數（easeInOutCubic）
-      const easeProgress = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2
-
-      // 插值相機位置
-      camera.position.lerpVectors(
-        startPosition.current,
-        targetCameraPos,
-        easeProgress
-      )
-
-      // 插值目標點
-      const currentTarget = new THREE.Vector3().lerpVectors(
-        startTarget.current,
-        targetPosition,
-        easeProgress
-      )
+      camera.position.lerpVectors(startPosition.current, targetCameraPos, easeProgress)
+      const currentTarget = new THREE.Vector3().lerpVectors(startTarget.current, targetPosition, easeProgress)
 
       controlsRef.current.target.copy(currentTarget)
       controlsRef.current.update()
@@ -304,18 +245,14 @@ function CameraAnimator({
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate)
       } else {
-        // 動畫完成
         animationRef.current = null
         if (onAnimationComplete) onAnimationComplete()
       }
     }
 
     animationRef.current = requestAnimationFrame(animate)
-
     return () => {
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current)
-      }
+      if (animationRef.current !== null) cancelAnimationFrame(animationRef.current)
     }
   }, [targetPosition, isAnimating, camera, controlsRef, onAnimationComplete])
 
@@ -325,8 +262,8 @@ function CameraAnimator({
 /**
  * 自動調整相機的初始位置
  */
-function AutoCamera({ 
-  groupRef, 
+function AutoCamera({
+  groupRef,
   controlsRef,
   modelsReady
 }: {
@@ -340,17 +277,13 @@ function AutoCamera({
   useEffect(() => {
     if (!modelsReady || initialized.current || !groupRef.current) return
 
-    // 計算整個場景的邊界框
     const box = new THREE.Box3()
     let hasMeshes = false
 
     groupRef.current.traverse((child) => {
-      if (child instanceof THREE.Mesh && child.geometry) {
-        if (child.geometry.attributes.position && child.geometry.attributes.position.count > 0) {
-          hasMeshes = true
-          const childBox = new THREE.Box3().setFromObject(child)
-          box.union(childBox)
-        }
+      if (child instanceof THREE.Mesh && child.geometry && child.geometry.attributes.position && child.geometry.attributes.position.count > 0) {
+        hasMeshes = true
+        box.union(new THREE.Box3().setFromObject(child))
       }
     })
 
@@ -358,16 +291,10 @@ function AutoCamera({
       const center = box.getCenter(new THREE.Vector3())
       const size = box.getSize(new THREE.Vector3())
       const maxDim = Math.max(size.x, size.y, size.z)
-
       const fovRad = (camera.fov * Math.PI) / 180
       const distance = maxDim > 0 ? (maxDim / (2 * Math.tan(fovRad / 2))) * 1.5 : 50
 
-      camera.position.set(
-        center.x + distance * 0.7,
-        center.y + distance * 0.7,
-        center.z + distance * 0.7
-      )
-
+      camera.position.set(center.x + distance * 0.7, center.y + distance * 0.7, center.z + distance * 0.7)
       camera.lookAt(center)
       camera.updateProjectionMatrix()
 
@@ -375,7 +302,6 @@ function AutoCamera({
         controlsRef.current.target.copy(center)
         controlsRef.current.update()
       }
-
       initialized.current = true
     }
   }, [modelsReady, camera, groupRef, controlsRef])
@@ -391,92 +317,80 @@ function SceneContent({
   allSites = [],
   modelsReady,
   setModelsReady,
-  groupRef
+  groupRef,
+  onSiteClick,
+  onViewDetail
 }: {
   selectedSite?: HistoricalSite | null
   allSites?: HistoricalSite[]
   modelsReady: boolean
   setModelsReady: (ready: boolean) => void
   groupRef: React.RefObject<THREE.Group>
+  onSiteClick?: (site: HistoricalSite) => void
+  onViewDetail?: (site: HistoricalSite) => void
 }) {
   const controlsRef = useRef<any>(null)
   const [isAnimating, setIsAnimating] = useState(false)
-  
-  // 計算選中景點的3D位置
+
   const targetPosition = useMemo(() => {
     if (!selectedSite) return null
-    return latLonToWorld3D(
-      selectedSite.latitude,
-      selectedSite.longitude,
-      selectedSite.height || 0
-    )
+    return latLonToWorld3D(selectedSite.latitude, selectedSite.longitude, selectedSite.height || 0)
   }, [selectedSite])
 
-  // 當選中的景點改變時，觸發相機動畫
+  // 移除自動觸發動畫的 useEffect
   useEffect(() => {
     if (targetPosition && modelsReady && !isAnimating) {
       setIsAnimating(true)
     }
-  }, [targetPosition, modelsReady, isAnimating])
+  }, [targetPosition, modelsReady])
 
-  const handleAnimationComplete = () => {
-    setIsAnimating(false)
+  const handleAnimationComplete = () => setIsAnimating(false)
+
+  const handleCenterView = () => {
+    if (targetPosition) setIsAnimating(true)
   }
 
   return (
     <>
-      {/* 環境光 */}
       <ambientLight intensity={0.9} />
-      {/* 主光源 - 從上方照射 */}
       <directionalLight position={[10, 20, 10]} intensity={1.2} />
-      {/* 輔助光 - 補充陰影區域 */}
       <directionalLight position={[-5, 10, -5]} intensity={0.4} />
 
-      {/* 載入所有tile */}
       <group ref={groupRef}>
         <Suspense fallback={<Loader />}>
           <AllTiles onAllLoaded={() => setModelsReady(true)} />
         </Suspense>
       </group>
 
-      {/* 只顯示選中景點的標記點 */}
-      {selectedSite && (() => {
-        const position = latLonToWorld3D(
-          selectedSite.latitude,
-          selectedSite.longitude,
-          selectedSite.height || 0
-        )
+      {allSites.map((site) => {
+        const position = latLonToWorld3D(site.latitude, site.longitude, site.height || 0)
         return (
           <SiteMarker
-            key={selectedSite.id}
+            key={site.id}
             position={position}
-            selected={true}
-            site={selectedSite}
+            selected={selectedSite?.id === site.id}
+            site={site}
+            onClick={onSiteClick}
+            onViewDetail={onViewDetail}
           />
         )
-      })()}
+      })}
 
-      {/* 軌道控制器 */}
-      <OrbitControls
+      <MapControls
         ref={controlsRef}
         enableZoom={true}
         enablePan={true}
         enableRotate={true}
-        minDistance={1}
+        minDistance={10}
         maxDistance={500}
-        target={[0, 0, 0]}
+        maxPolarAngle={Math.PI / 2 - 0.1}
         dampingFactor={0.05}
         enableDamping={true}
+        screenSpacePanning={false}
       />
 
-      {/* 自動調整初始相機位置 */}
-      <AutoCamera
-        groupRef={groupRef}
-        controlsRef={controlsRef}
-        modelsReady={modelsReady}
-      />
+      <AutoCamera groupRef={groupRef} controlsRef={controlsRef} modelsReady={modelsReady} />
 
-      {/* 相機動畫 - 跳轉到選中的景點 */}
       {targetPosition && (
         <CameraAnimator
           targetPosition={targetPosition}
@@ -486,19 +400,32 @@ function SceneContent({
         />
       )}
 
-      {/* 環境貼圖 - 使用天空相關的preset */}
       <Environment preset="sunset" />
+
+      {/* 復位按鈕 */}
+      <Html position={[0, 0, 0]} style={{ pointerEvents: 'none' }} zIndexRange={[100, 0]}>
+        <div style={{ position: 'fixed', bottom: '20px', right: '20px', pointerEvents: 'auto', zIndex: 1000 }}>
+          <button
+            onClick={handleCenterView}
+            className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group"
+            title="回到中心 / 聚焦景點"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 group-hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11l-3 3m0 0l-3-3m3 3V8" />
+            </svg>
+          </button>
+        </div>
+      </Html>
     </>
   )
 }
 
-/**
- * 3D模型查看器組件
- * 顯示所有tile並支持景點標記和相機跳轉
- */
 const ModelViewer: React.FC<ModelViewerProps> = ({
   selectedSite,
   allSites = [],
+  onSiteClick,
+  onViewDetail,
   width = '100%',
   height = '500px'
 }) => {
@@ -506,26 +433,12 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   const [modelsReady, setModelsReady] = useState(false)
 
   return (
-    <div
-      className="relative overflow-hidden w-full h-full"
-      style={{ 
-        width, 
-        height,
-        // 簡單的天空藍色背景
-        background: '#E0F2FE'
-      }}
-    >
+    <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ background: '#E0F2FE' }}>
       <Canvas
         camera={{ position: [0, 50, 100], fov: 50, near: 0.1, far: 2000 }}
-        // 降低裝置像素比與關閉超高解析的抗鋸齒，讓 3D 渲染更順
         dpr={[1, 1.5]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
-        style={{ 
-          background: 'transparent',
-          width: '100%',
-          height: '100%',
-          display: 'block'
-        }}
+        style={{ background: 'transparent', width: '100%', height: '100%', display: 'block' }}
       >
         <SceneContent
           selectedSite={selectedSite}
@@ -533,6 +446,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
           modelsReady={modelsReady}
           setModelsReady={setModelsReady}
           groupRef={groupRef}
+          onSiteClick={onSiteClick}
+          onViewDetail={onViewDetail}
         />
       </Canvas>
     </div>

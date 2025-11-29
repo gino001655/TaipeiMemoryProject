@@ -15,6 +15,10 @@ export const historicalSites: HistoricalSite[] = [
     height: 50,
     year: '史前時代',
     category: '考古遺址',
+    images: [
+      'https://images.unsplash.com/photo-1599833975787-5c143f373c30?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1518182170546-0766ba6f6a56?q=80&w=2070&auto=format&fit=crop'
+    ],
     // 使用 mountain3D 資料夾中的3D模型
     modelUrl: '/mountain3D/9e7dca72aae0_1.gltf',
     modelScale: 1.0,
@@ -30,6 +34,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 5,
     year: '清代',
     category: '碑文',
+    images: [
+      'https://images.unsplash.com/photo-1605445272767-640149285039?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_2.gltf',
     modelScale: 0.5,
     modelHeading: 0
@@ -44,6 +51,10 @@ export const historicalSites: HistoricalSite[] = [
     height: 20,
     year: '清代',
     category: '宗教建築',
+    images: [
+      'https://images.unsplash.com/photo-1542642839-84ad16a798cd?q=80&w=2070&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1590076215667-875d4ef2d743?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_3.gltf',
     modelScale: 1.2,
     modelHeading: 0
@@ -58,6 +69,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 30,
     year: '現代',
     category: '步道',
+    images: [
+      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_4.gltf',
     modelScale: 1.0,
     modelHeading: 0
@@ -72,6 +86,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 40,
     year: '清代',
     category: '軍事遺跡',
+    images: [
+      'https://images.unsplash.com/photo-1599590984817-0c15f45b64a0?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_5.gltf',
     modelScale: 0.8,
     modelHeading: 0
@@ -86,6 +103,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 60,
     year: '現代',
     category: '觀景設施',
+    images: [
+      'https://images.unsplash.com/photo-1627894483216-2138af692e32?q=80&w=2068&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_6.gltf',
     modelScale: 1.0,
     modelHeading: 0
@@ -100,6 +120,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 15,
     year: '現代',
     category: '生態設施',
+    images: [
+      'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_7.gltf',
     modelScale: 0.6,
     modelHeading: 0
@@ -114,6 +137,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 25,
     year: '現代',
     category: '文化設施',
+    images: [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_8.gltf',
     modelScale: 1.0,
     modelHeading: 0
@@ -128,6 +154,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 35,
     year: '百年以上',
     category: '自然遺產',
+    images: [
+      'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_9.gltf',
     modelScale: 0.7,
     modelHeading: 0
@@ -142,6 +171,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 20,
     year: '史前時代',
     category: '考古展示',
+    images: [
+      'https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_10.gltf',
     modelScale: 1.0,
     modelHeading: 0
@@ -156,6 +188,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 12,
     year: '現代',
     category: '入口設施',
+    images: [
+      'https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_11.gltf',
     modelScale: 0.9,
     modelHeading: 0
@@ -170,6 +205,9 @@ export const historicalSites: HistoricalSite[] = [
     height: 8,
     year: '現代',
     category: '紀念設施',
+    images: [
+      'https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?q=80&w=2070&auto=format&fit=crop'
+    ],
     modelUrl: '/mountain3D/9e7dca72aae0_12.gltf',
     modelScale: 0.5,
     modelHeading: 0
