@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Map, Layers, Info, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import ModelViewer from '../components/ModelViewer'
@@ -14,9 +14,32 @@ const SpatialMap: React.FC = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [showInfoCard, setShowInfoCard] = useState(true)
 
+    // Set initial sidebar state based on screen size
+    useEffect(() => {
+        const handleResize = () => {
+            // On mobile (< 768px), collapse sidebar by default
+            if (window.innerWidth < 768) {
+                setIsSidebarCollapsed(true)
+            } else {
+                setIsSidebarCollapsed(false)
+            }
+        }
+
+        // Set initial state
+        handleResize()
+
+        // Listen for resize events
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
     const handleSelectSite = (site: HistoricalSite) => {
         setSelectedSite(site)
         setShowInfoCard(true)
+        // On mobile, collapse sidebar after selection to show the map
+        if (window.innerWidth < 768) {
+            setIsSidebarCollapsed(true)
+        }
     }
 
     const handleViewDetail = (site: HistoricalSite) => {
@@ -26,7 +49,7 @@ const SpatialMap: React.FC = () => {
     return (
         <div className="flex h-screen w-full bg-vintage-paper overflow-hidden">
             {/* Sidebar (Mac-style) */}
-            <aside className={`flex-shrink-0 flex flex-col border-r-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm z-20 shadow-xl transition-all duration-300 ${isSidebarCollapsed ? 'w-0 overflow-hidden' : 'w-80'}`}>
+            <aside className={`relative flex-shrink-0 flex flex-col border-r-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm z-20 shadow-xl transition-all duration-300 ${isSidebarCollapsed ? 'w-0 overflow-hidden' : 'w-80'}`}>
                 {/* Sidebar Header */}
                 <div className="p-6 border-b border-sepia-500/10">
                     <h2 className="text-2xl font-serif font-bold text-ink-black flex items-center gap-2">
@@ -102,13 +125,14 @@ const SpatialMap: React.FC = () => {
                 </div>
             </aside>
 
-            {/* Sidebar Toggle Button */}
+            {/* Sidebar Toggle Button - Outside sidebar so always visible */}
             <button
                 onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-                className="absolute top-6 left-0 z-30 bg-vintage-paper border-2 border-sepia-500/20 p-2 rounded-r-lg shadow-lg hover:bg-sepia-500/10 transition-all duration-300"
-                style={{ left: isSidebarCollapsed ? '0' : '320px' }}
+                className="absolute top-1/2 -translate-y-1/2 z-50 bg-vintage-paper border-2 border-sepia-500/20 p-2 rounded-full shadow-lg hover:bg-sepia-500/10 hover:border-vermilion/50 transition-all duration-300"
+                style={{ left: isSidebarCollapsed ? '16px' : '304px' }}
+                title={isSidebarCollapsed ? '展開選單' : '收合選單'}
             >
-                {isSidebarCollapsed ? <ChevronRight className="w-4 h-4 text-ink-black" /> : <ChevronLeft className="w-4 h-4 text-ink-black" />}
+                {isSidebarCollapsed ? <ChevronRight className="w-5 h-5 text-ink-black" /> : <ChevronLeft className="w-5 h-5 text-ink-black" />}
             </button>
 
             {/* Main Content (3D Viewer) */}
