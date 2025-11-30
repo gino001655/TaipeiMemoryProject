@@ -413,10 +413,10 @@ function SceneContent({
         <div style={{ position: 'fixed', bottom: '20px', right: '20px', pointerEvents: 'auto', zIndex: 1000 }}>
           <button
             onClick={handleCenterView}
-            className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group"
+            className="bg-white text-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group"
             title="回到中心 / 聚焦景點"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 group-hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 group-hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11l-3 3m0 0l-3-3m3 3V8" />
             </svg>

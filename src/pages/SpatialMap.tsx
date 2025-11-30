@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Map, Layers, Info } from 'lucide-react'
+import { Map, Layers, Info, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import ModelViewer from '../components/ModelViewer'
 import { historicalSites } from '../data/sites'
 import { HistoricalSite } from '../types'
@@ -11,9 +11,12 @@ const SpatialMap: React.FC = () => {
         historicalSites.find(site => site.modelUrl) || historicalSites[0]
     )
     const [activeLayer, setActiveLayer] = useState<'prehistoric' | 'qing' | 'modern'>('modern')
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [showInfoCard, setShowInfoCard] = useState(true)
 
     const handleSelectSite = (site: HistoricalSite) => {
         setSelectedSite(site)
+        setShowInfoCard(true)
     }
 
     const handleViewDetail = (site: HistoricalSite) => {
@@ -23,7 +26,7 @@ const SpatialMap: React.FC = () => {
     return (
         <div className="flex h-screen w-full bg-vintage-paper overflow-hidden">
             {/* Sidebar (Mac-style) */}
-            <aside className="w-80 flex-shrink-0 flex flex-col border-r-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm z-20 shadow-xl">
+            <aside className={`flex-shrink-0 flex flex-col border-r-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm z-20 shadow-xl transition-all duration-300 ${isSidebarCollapsed ? 'w-0 overflow-hidden' : 'w-80'}`}>
                 {/* Sidebar Header */}
                 <div className="p-6 border-b border-sepia-500/10">
                     <h2 className="text-2xl font-serif font-bold text-ink-black flex items-center gap-2">
@@ -42,8 +45,8 @@ const SpatialMap: React.FC = () => {
                             key={site.id}
                             onClick={() => handleSelectSite(site)}
                             className={`w-full text-left p-4 rounded-sm border transition-all duration-300 group relative overflow-hidden ${selectedSite?.id === site.id
-                                    ? 'bg-sepia-500/10 border-vermilion shadow-sm'
-                                    : 'bg-white/40 border-sepia-500/10 hover:border-sepia-500/30 hover:bg-white/60'
+                                ? 'bg-sepia-500/10 border-vermilion shadow-sm'
+                                : 'bg-white/40 border-sepia-500/10 hover:border-sepia-500/30 hover:bg-white/60'
                                 }`}
                         >
                             <div className="flex justify-between items-start mb-1">
@@ -87,8 +90,8 @@ const SpatialMap: React.FC = () => {
                                     key={layer}
                                     onClick={() => setActiveLayer(layerKey as any)}
                                     className={`flex-1 py-2 text-xs font-serif rounded-sm border transition-all duration-300 ${isActive
-                                            ? 'bg-ink-black text-vintage-paper border-ink-black shadow-md'
-                                            : 'bg-white/50 text-ink-black/60 border-sepia-500/20 hover:border-sepia-500/50'
+                                        ? 'bg-ink-black text-vintage-paper border-ink-black shadow-md'
+                                        : 'bg-white/50 text-ink-black/60 border-sepia-500/20 hover:border-sepia-500/50'
                                         }`}
                                 >
                                     {layer}
@@ -99,8 +102,17 @@ const SpatialMap: React.FC = () => {
                 </div>
             </aside>
 
+            {/* Sidebar Toggle Button */}
+            <button
+                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                className="absolute top-6 left-0 z-30 bg-vintage-paper border-2 border-sepia-500/20 p-2 rounded-r-lg shadow-lg hover:bg-sepia-500/10 transition-all duration-300"
+                style={{ left: isSidebarCollapsed ? '0' : '320px' }}
+            >
+                {isSidebarCollapsed ? <ChevronRight className="w-4 h-4 text-ink-black" /> : <ChevronLeft className="w-4 h-4 text-ink-black" />}
+            </button>
+
             {/* Main Content (3D Viewer) */}
-            <main className="flex-1 relative h-full bg-vintage-paper">
+            <main className="flex-1 relative h-full bg-vintage-paper overflow-hidden">
                 {/* 3D Viewer Container - Full Height */}
                 <div className="absolute inset-0 z-0">
                     <ModelViewer
@@ -116,19 +128,29 @@ const SpatialMap: React.FC = () => {
                 <div className="absolute inset-0 pointer-events-none z-10 opacity-10 bg-paper-texture mix-blend-multiply" />
 
                 {/* Info Overlay (Floating) */}
-                {selectedSite && (
+                {selectedSite && showInfoCard && (
                     <div className="absolute top-6 right-6 z-20 w-80">
-                        <div className="vintage-panel p-6 rounded-sm shadow-2xl transform transition-all duration-500 hover:scale-[1.02]">
+                        <div className="vintage-panel p-6 rounded-sm shadow-2xl transform transition-all duration-500">
                             <div className="flex items-start justify-between mb-4 border-b-2 border-sepia-500/20 pb-2">
                                 <h2 className="text-2xl font-serif font-bold text-ink-black">
                                     {selectedSite.name}
                                 </h2>
-                                <button
-                                    onClick={() => handleViewDetail(selectedSite)}
-                                    className="p-2 hover:bg-sepia-500/10 rounded-full transition-colors"
-                                >
-                                    <Info className="w-5 h-5 text-vermilion" />
-                                </button>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setShowInfoCard(false)}
+                                        className="p-2 hover:bg-sepia-500/10 rounded-full transition-colors"
+                                        title="關閉"
+                                    >
+                                        <X className="w-4 h-4 text-ink-black/60" />
+                                    </button>
+                                    <button
+                                        onClick={() => handleViewDetail(selectedSite)}
+                                        className="p-2 hover:bg-sepia-500/10 rounded-full transition-colors"
+                                        title="查看詳情"
+                                    >
+                                        <Info className="w-5 h-5 text-vermilion" />
+                                    </button>
+                                </div>
                             </div>
                             <p className="text-ink-black/80 font-serif leading-loose text-sm mb-4">
                                 {selectedSite.description.substring(0, 100)}...

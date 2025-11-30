@@ -14,7 +14,7 @@ const MainLayout: React.FC = () => {
     ];
 
     return (
-        <div className="relative w-full h-screen overflow-hidden flex flex-col">
+        <div className="relative w-full min-h-screen flex flex-col">
             {/* Vintage Navigation Bar */}
             <nav className="z-50 px-6 py-4 flex items-center justify-between border-b-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm shadow-sm">
                 <Link to="/" className="flex items-center gap-3 group">
@@ -69,32 +69,43 @@ const MainLayout: React.FC = () => {
             {/* Mobile Navigation Overlay */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="absolute top-[72px] left-0 right-0 bg-vintage-paper border-b-2 border-sepia-500/20 shadow-lg z-40 md:hidden flex flex-col p-4 gap-4"
-                    >
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.path}
-                                to={item.path}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center gap-3 p-3 rounded-lg ${location.pathname.startsWith(item.path)
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="fixed inset-0 bg-ink-black/20 z-30 md:hidden"
+                        />
+                        {/* Menu */}
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="absolute top-[72px] left-0 right-0 bg-vintage-paper border-b-2 border-sepia-500/20 shadow-lg z-40 md:hidden flex flex-col p-4 gap-4"
+                        >
+                            {navItems.map((item) => (
+                                <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 p-3 rounded-lg ${location.pathname.startsWith(item.path)
                                         ? 'bg-sepia-500/10 text-vermilion font-bold'
                                         : 'text-ink-black hover:bg-black/5'
-                                    }`}
-                            >
-                                <item.icon className="w-5 h-5" />
-                                <span className="font-serif text-lg">{item.label}</span>
-                            </Link>
-                        ))}
-                    </motion.div>
+                                        }`}
+                                >
+                                    <item.icon className="w-5 h-5" />
+                                    <span className="font-serif text-lg">{item.label}</span>
+                                </Link>
+                            ))}
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
             {/* Main Content Area */}
-            <main className="flex-1 relative overflow-hidden">
+            <main className="flex-1 relative">
                 <Outlet />
             </main>
         </div>

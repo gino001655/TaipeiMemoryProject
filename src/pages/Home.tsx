@@ -31,9 +31,9 @@ const Home: React.FC = () => {
     ];
 
     return (
-        <div className="relative w-full h-screen overflow-hidden bg-vintage-paper">
+        <div className="relative w-full min-h-screen overflow-y-auto bg-vintage-paper">
             {/* Background 3D Scene */}
-            <div className="absolute inset-0 z-0 opacity-60">
+            <div className="fixed inset-0 z-0 opacity-60">
                 <ModelViewer
                     allSites={historicalSites}
                 />
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* Main Content */}
-            <div className="relative z-10 h-full flex flex-col justify-center items-center px-6 md:px-12">
+            <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 md:px-12 py-20">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
