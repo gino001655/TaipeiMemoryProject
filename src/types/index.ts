@@ -15,5 +15,6 @@ export interface HistoricalSite {
   modelUrl?: string // GLTF/GLB 模型文件路徑（推薦格式）
   modelScale?: number // 模型縮放比例，預設為 1.0
   modelHeading?: number // 模型旋轉角度（弧度），預設為 0
+  position?: [number, number, number] // 3D場景中的座標 [x, y, z]
 }
 

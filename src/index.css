@@ -1,92 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+
 @layer base {
-  :root {
-    /* 復古色系 - 老照片/舊紙張風格 */
-    --vintage-cream: #f4ecd8;
-    --vintage-paper: #e8dcc4;
-    --vintage-brown: #8b7355;
-    --vintage-dark-brown: #5c4a3a;
-    --vintage-sepia: #704214;
-    --vintage-gold: #d4a574;
-    --vintage-border: #b8956a;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
-    @apply antialiased;
-    font-family: 'Noto Serif TC', serif;
-    line-height: 1.7;
-    font-weight: 400;
-    color: var(--vintage-dark-brown);
-    background: linear-gradient(to bottom, #f4ecd8, #e8dcc4);
-    background-attachment: fixed;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* 復古標題字體 */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: 'Cinzel', 'Noto Serif TC', serif;
-    color: var(--vintage-sepia);
-  }
-
-  /* 自定義滾動條 - 復古風格 */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--vintage-cream);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--vintage-border);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--vintage-brown);
+    @apply bg-vintage-paper text-ink-black font-serif antialiased;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
   }
 }
 
-@layer utilities {
+@layer components {
 
-  /* 復古裝飾線條 */
-  .vintage-border {
-    border: 2px solid var(--vintage-border);
-    box-shadow: inset 0 0 0 1px rgba(212, 165, 116, 0.3);
+  /* Vintage Panel - Parchment style */
+  .vintage-panel {
+    @apply backdrop-blur-sm border-2 border-sepia-500/30;
+    background-color: rgba(245, 242, 233, 0.9);
+    /* vintage-paper with opacity */
+    box-shadow: 4px 4px 0px 0px rgba(139, 94, 60, 0.2);
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
   }
 
-  /* 老紙張質感 */
-  .vintage-paper {
-    background: var(--vintage-paper);
-    background-image:
-      linear-gradient(rgba(139, 115, 85, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139, 115, 85, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+  /* Ink Button */
+  .ink-button {
+    @apply px-6 py-2 bg-ink-black text-vintage-paper font-bold tracking-widest hover:bg-sepia-500 transition-colors duration-300 shadow-md;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
   }
 
-  /* 復古陰影 */
-  .vintage-shadow {
-    box-shadow:
-      0 2px 4px rgba(112, 66, 20, 0.1),
-      0 4px 12px rgba(112, 66, 20, 0.08);
+  /* Scroll Bar */
+  ::-webkit-scrollbar {
+    width: 10px;
   }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-vintage-paper;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-sepia-500/50 hover:bg-sepia-500 rounded-full;
+  }
+}
+
+/* Typography Utilities */
+.text-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* Background Patterns */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(139, 94, 60, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 94, 60, 0.1) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-size: 20px 20px;
+  background-image: radial-gradient(rgba(139, 94, 60, 0.2) 1px, transparent 1px);
+}
+
+/* Ink Ripple Animation */
+@keyframes ink-spread {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ink-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ink-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(44, 44, 44, 0.2) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.ink-ripple:active::after {
+  transform: translate(-50%, -50%) scale(2.5);
+  opacity: 1;
+  transition: 0s;
 }

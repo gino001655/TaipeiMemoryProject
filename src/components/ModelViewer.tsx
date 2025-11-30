@@ -297,7 +297,7 @@ function AutoCamera({
       const center = box.getCenter(new THREE.Vector3())
       const size = box.getSize(new THREE.Vector3())
       const maxDim = Math.max(size.x, size.y, size.z)
-      const fovRad = (camera.fov * Math.PI) / 180
+      const fovRad = ((camera as THREE.PerspectiveCamera).fov * Math.PI) / 180
       const distance = maxDim > 0 ? (maxDim / (2 * Math.tan(fovRad / 2))) * 1.5 : 50
 
       camera.position.set(center.x + distance * 0.7, center.y + distance * 0.7, center.z + distance * 0.7)
@@ -431,9 +431,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   selectedSite,
   allSites = [],
   onSiteClick,
-  onViewDetail,
-  width = '100%',
-  height = '500px'
+  onViewDetail
 }) => {
   const groupRef = useRef<THREE.Group>(null)
   const [modelsReady, setModelsReady] = useState(false)
