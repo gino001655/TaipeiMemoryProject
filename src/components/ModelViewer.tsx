@@ -143,17 +143,35 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
   useEffect(() => {
     if (!scene || !groupRef.current) return
     const clonedScene = scene.clone()
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (!clonedScene || !groupRef.current) return
-        clonedScene.updateMatrixWorld(true)
-        if (groupRef.current) {
-          groupRef.current.add(clonedScene)
-          if (onLoaded) onLoaded()
+
+    // 使用 requestAnimationFrame 避免阻塞主線程
+    let frameId: number
+
+    const addScene = () => {
+      if (!clonedScene || !groupRef.current) return
+      clonedScene.updateMatrixWorld(true)
+      groupRef.current.add(clonedScene)
+      if (onLoaded) onLoaded()
+    }
+
+    frameId = requestAnimationFrame(() => {
+      frameId = requestAnimationFrame(addScene)
+    })
+
+    return () => {
+      cancelAnimationFrame(frameId)
+      if (groupRef.current) {
+        groupRef.current.remove(clonedScene)
+      }
+      // 釋放資源
+      clonedScene.traverse((object) => {
+        if (object instanceof THREE.Mesh) {
+          object.geometry.dispose()
+          // 不釋放材質，因為可能被共用
         }
       })
-    })
-  }, [scene, url, onLoaded])
+    }
+  }, [scene, onLoaded])
 
   return <group ref={groupRef} />
 }
@@ -162,35 +180,23 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
  * 加載所有tile的組件
  */
 function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
-  const [loadedCount, setLoadedCount] = useState(0)
+  const loadedCountRef = useRef(0)
   const totalTiles = 100
   const tileUrls = useMemo(() => Array.from({ length: totalTiles }, (_, i) => `/mountain3D/9e7dca72aae0_${i + 1}.gltf`), [])
 
   const handleTileLoaded = () => {
-    setLoadedCount(prev => {
-      const newCount = prev + 1
-      if (newCount === totalTiles && onAllLoaded) {
-        setTimeout(() => onAllLoaded(), 500)
-      }
-      return newCount
-    })
+    loadedCountRef.current += 1
+    if (loadedCountRef.current === totalTiles && onAllLoaded) {
+      // 延遲一下以確保渲染完成
+      setTimeout(() => onAllLoaded(), 100)
+    }
   }
 
   return (
     <>
       {tileUrls.map((url) => (
-        <Suspense key={url} fallback={null}>
-          <TileModel url={url} onLoaded={handleTileLoaded} />
-        </Suspense>
+        <TileModel key={url} url={url} onLoaded={handleTileLoaded} />
       ))}
-      {loadedCount < totalTiles && (
-        <Html center>
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-6 w-6 border border-white border-t-transparent"></div>
-            <p className="mt-3 text-xs text-white font-light tracking-wide opacity-80">載入中 {loadedCount}/{totalTiles}</p>
-          </div>
-        </Html>
-      )}
     </>
   )
 }

@@ -118,3 +118,4 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ site, onClose }) => {
 
 export default InfoPanel
 
+
