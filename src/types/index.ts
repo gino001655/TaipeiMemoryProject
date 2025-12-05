@@ -3,7 +3,7 @@ export interface HistoricalSite {
   id: string
   name: string
   description: string
-  type: '石碑' | '歷史遺跡' | '建築' | '其他'
+  type: '石碑' | '歷史遺跡' | '建築' | '其他' | '步道'
   // 經緯度座標 (芝山地區約在 25.102°N, 121.523°E)
   longitude: number
   latitude: number

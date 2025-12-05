@@ -10,8 +10,8 @@ export const historicalSites: HistoricalSite[] = [
     name: '芝山岩遺址 (Zhishan Rock Site)',
     description: '芝山岩遺址是台北盆地中極具代表性的多文化層遺址，涵蓋了大坌坑文化、圓山文化、植物園文化等史前文化層。這裡發現了大量的陶器、石器、骨角器以及墓葬，顯示出數千年前人類在此居住的繁榮景象。特別是「芝山岩文化」的發現，填補了台北盆地史前史的重要缺口。遺址中還出土了碳化的稻米，證明了當時已有農業活動。',
     type: '歷史遺跡',
-    longitude: 121.523,
-    latitude: 25.102,
+    longitude: 121.5329406,
+    latitude: 25.1016861,
     height: 50,
     year: '史前時代 (Prehistoric)',
     category: '考古遺址',
@@ -26,11 +26,11 @@ export const historicalSites: HistoricalSite[] = [
   },
   {
     id: '2',
-    name: '芝山岩碑 (Zhishan Rock Stele)',
+    name: '芝山合約碑記 (Zhishan Contract Stele)',
     description: '此碑立於清代，記載了芝山岩在林爽文事件中的重要角色。當時漳州人以此為避難所，成功抵禦了外來的攻擊。碑文詳細描述了當時的戰況與居民的團結，是研究清代台灣社會動亂與族群關係的重要史料。石碑本身經過歲月洗禮，字跡雖有磨損，但仍能感受到歷史的厚重感。',
     type: '石碑',
-    longitude: 121.524,
-    latitude: 25.103,
+    longitude: 121.5321262,
+    latitude: 25.1017997,
     height: 5,
     year: '清代 (Qing Dynasty)',
     category: '碑文',
@@ -47,8 +47,8 @@ export const historicalSites: HistoricalSite[] = [
     name: '惠濟宮 (Huiji Temple)',
     description: '惠濟宮建於清乾隆年間，是芝山岩地區的信仰中心，供奉開漳聖王。廟宇建築保留了傳統的閩南風格，燕尾脊、剪黏裝飾精美絕倫。除了宗教功能外，惠濟宮也是早期的教育場所，設有「文昌祠」，許多學子在此求學。廟前的廣場是居民聚會的場所，見證了當地的社區發展。',
     type: '建築',
-    longitude: 121.522,
-    latitude: 25.101,
+    longitude: 121.53073,
+    latitude: 25.1028652,
     height: 20,
     year: '清代 (Qing Dynasty)',
     category: '宗教建築',
@@ -61,31 +61,15 @@ export const historicalSites: HistoricalSite[] = [
     modelHeading: 0,
     position: [-2, 0.3, -1]
   },
-  {
-    id: '4',
-    name: '芝山岩步道 (Zhishan Trail)',
-    description: '這條環狀步道串聯了芝山岩的各個重要景點。步道兩旁古木參天，生態豐富，常可見到松鼠、五色鳥等野生動物。步道設計考量了地形起伏，部分路段保留了古老的石階，讓行走其間彷彿穿越時空。沿途設有多個解說牌，介紹地質景觀與歷史故事，是一條兼具休閒與教育功能的生態步道。',
-    type: '歷史遺跡',
-    longitude: 121.5235,
-    latitude: 25.1025,
-    height: 30,
-    year: '現代 (Modern)',
-    category: '步道',
-    images: [
-      '/images/nature.jpg'
-    ],
-    modelUrl: '/mountain3D/9e7dca72aae0_4.gltf',
-    modelScale: 1.0,
-    modelHeading: 0,
-    position: [1, 0.4, 1]
-  },
+  
   {
     id: '5',
-    name: '砲台遺址 (Artillery Battery Ruins)',
+    name: '西砲台 (Artillery Battery Ruins)',
     description: '位於芝山岩制高點的砲台遺址，是戰後初期國民政府為了防衛士林官邸而設立的軍事設施。當時芝山岩被劃為軍事管制區，禁止一般民眾進入，也因此保留了相當完整的自然生態。砲台的混凝土結構依然堅固，牆上還留有當年的射擊孔，訴說著那段冷戰時期的緊張氛圍。',
     type: '歷史遺跡',
-    longitude: 121.5245,
-    latitude: 25.1015,
+    longitude: 121.5296903,
+    latitude: 25.1037676,
+    //25.1037676,121.5296903
     height: 40,
     year: '戰後 (Post-War)',
     category: '軍事遺跡',
@@ -97,16 +81,18 @@ export const historicalSites: HistoricalSite[] = [
     modelHeading: 0,
     position: [3, 0.6, -2]
   },
+  
   {
     id: '6',
-    name: '北隘門 (North Gate)',
-    description: '清代為了防禦盜匪與民變而修築的隘門系統之一。北隘門扼守芝山岩北側的通道，地勢險要，有一夫當關萬夫莫敵之勢。牆體以當地的石材堆砌而成，堅固耐用。雖然木造的門扇已不復存在，但石砌的門框與牆垣仍保存完好，是台北地區少見的清代防禦工事遺跡。',
-    type: '建築',
-    longitude: 121.5232,
-    latitude: 25.1032,
+    name: '學務官僚遭難碑',
+    description: '遭難之碑是在芝山岩事件之後，由殖民政府為紀念六位遇害教師而豎立的碑石。碑文面向刻著「學務官僚遭難之碑」，是由當時日本內閣總理大臣伊藤博文親自題字。此碑不僅紀錄這場教師遇害事件，同時也象徵殖民政權欲透過紀念與儀式，強化在台教育的正當性與殖民統治的合法性。在後來的歷史中，這塊碑曾被毀壞、遺棄，但也因為社會與學界對於歷史教育保存的重視，於1990年代後重建復原。現在它與墓地一起，被視為芝山岩文化史蹟的重要遺跡。\n\n對於探訪者來說，遭難之碑是理解「芝山岩神社時代」與「日本殖民教育歷史」的重要入口——紀念碑文、碑身風化與復原，都是值得細看與反思的歷史痕跡。',
+    type: '石碑',
+    longitude: 121.5328722,
+    latitude: 25.103088,
+    
     height: 60,
     year: '清代 (Qing Dynasty)',
-    category: '防禦設施',
+    category: '石碑',
     images: [
       '/images/ruins.jpg'
     ],
@@ -115,70 +101,19 @@ export const historicalSites: HistoricalSite[] = [
     modelHeading: 0,
     position: [0.5, 0.8, 3]
   },
-  {
-    id: '7',
-    name: '生態池 (Ecological Pond)',
-    description: '位於芝山岩山腳下的生態池，是利用天然湧泉與低窪地形營造而成的濕地環境。池中種植了睡蓮、莎草等水生植物，吸引了蜻蜓、青蛙等水生動物棲息。這裡也是鳥類的重要飲水與覓食地。生態池的設立不僅豐富了當地的生物多樣性，也調節了微氣候，為炎熱的城市提供了一處清涼的角落。',
-    type: '其他',
-    longitude: 121.5225,
-    latitude: 25.1028,
-    height: 15,
-    year: '現代 (Modern)',
-    category: '生態設施',
-    images: [
-      '/images/nature.jpg'
-    ],
-    modelUrl: '/mountain3D/9e7dca72aae0_7.gltf',
-    modelScale: 0.6,
-    modelHeading: 0,
-    position: [-1.5, 0.1, 1.5]
-  },
-  {
-    id: '8',
-    name: '文化生態綠園 (Cultural & Ecological Garden)',
-    description: '這是全台第一座文化生態公園，整合了芝山岩豐富的人文與自然資源。園區內設有展示館，詳細介紹了芝山岩的地質演變、史前文化、歷史事件與生態系統。透過互動式的展覽與導覽解說，讓遊客能深入了解這座「活的博物館」。園區也定期舉辦環境教育活動，推廣生態保育觀念。',
-    type: '建築',
-    longitude: 121.5238,
-    latitude: 25.1018,
-    height: 25,
-    year: '現代 (Modern)',
-    category: '文化設施',
-    images: [
-      '/images/view.jpg'
-    ],
-    modelUrl: '/mountain3D/9e7dca72aae0_8.gltf',
-    modelScale: 1.0,
-    modelHeading: 0,
-    position: [1.5, 0.2, -1.5]
-  },
-  {
-    id: '9',
-    name: '百年老樟樹 (Centennial Camphor Tree)',
-    description: '這棵樹齡超過三百年的老樟樹，是芝山岩的鎮山之寶。它見證了從清代、日治到現代的歷史變遷。巨大的樹冠如同一把綠色的大傘，為過往的旅人提供遮蔭。老樟樹的根系盤根錯節，緊緊抓住了岩石，展現了強韌的生命力。當地居民視其為神樹，常在樹下祈福。',
-    type: '其他',
-    longitude: 121.5233,
-    latitude: 25.1023,
-    height: 35,
-    year: '百年以上 (Centennial)',
-    category: '自然遺產',
-    images: [
-      '/images/nature.jpg'
-    ],
-    modelUrl: '/mountain3D/9e7dca72aae0_9.gltf',
-    modelScale: 0.7,
-    modelHeading: 0,
-    position: [0.8, 0.5, 0.5]
-  },
+  
+  
   {
     id: '10',
-    name: '西隘門 (West Gate)',
-    description: '西隘門位於通往惠濟宮的石階路口，是芝山岩四個隘門中保存最為完整的一個。門額上題有「芝山岩」三字，字體蒼勁有力。隘門兩側連接城牆，形成一道堅固的防線。在過去治安不靖的年代，隘門是保護聚落安全的重要屏障。如今，穿越西隘門，彷彿進入了一個時光隧道。',
+    name: '六氏先生之墓 (Liu Shi Xian Sheng Zhi Mu)',
+    description: '「六氏先生」是當年（1896年1月1日）在芝山岩學堂任教的六位日本籍教師集體遇害的總稱。這場事件後來被稱為芝山岩事件。為了紀念這六名教師，日本政府將他們的骨灰安葬於芝山岩山頂附近的一棵大樟樹下，並豎立紀念碑。這座墓地，就是現在被稱為六氏先生墓的所在。\n\n隨著歷史變遷，這塊墓地與相關紀念碑曾被毀損或荒廢。直到1990年代後期，地方人士才於原址重新立碑，追認這段歷史，使墓地得以被保存與重視。\n\n六氏先生墓對研究者與訪客而言，是當年殖民教化與抗日衝突、文化同化與在地反抗交錯史的一個具體見證。即使今天墓園形式已不復當年的莊嚴，但其歷史意義與悲劇性，仍是芝山岩不可忽視的重要組成部分。',
     type: '歷史遺跡',
-    longitude: 121.5236,
-    latitude: 25.1026,
+    longitude: 121.5322362,
+    latitude: 25.103145,
+    //25.103145,121.5322362
     height: 20,
     year: '清代 (Qing Dynasty)',
-    category: '防禦設施',
+    category: '墓地',
     images: [
       '/images/ruins.jpg'
     ],
@@ -187,14 +122,16 @@ export const historicalSites: HistoricalSite[] = [
     modelHeading: 0,
     position: [1.2, 0.3, 1.8]
   },
+  
   {
     id: '11',
     name: '雨農閱覽室 (Yunong Reading Room)',
     description: '這座閱覽室是為了紀念戴笠（字雨農）將軍而建。建築風格簡約典雅，周圍環境清幽，是讀書靜心的好地方。閱覽室前身為日治時期的神社附屬建築，戰後改建。這裡保存了許多關於戴笠將軍的史料與照片，也是研究民國史的一個重要據點。',
     type: '建築',
-    longitude: 121.5228,
-    latitude: 25.1012,
-    height: 12,
+    longitude: 121.5328622,
+    latitude: 25.103048,
+    //25.103048,121.5328622
+    height: 60,
     year: '戰後 (Post-War)',
     category: '紀念設施',
     images: [
@@ -205,16 +142,18 @@ export const historicalSites: HistoricalSite[] = [
     modelHeading: 0,
     position: [-0.5, 0.15, -2.5]
   },
+  
   {
     id: '12',
-    name: '同歸所 (Tonggui Shrine)',
-    description: '同歸所是用來收容林爽文事件中無主骨骸的場所，體現了台灣人「死者為大」的傳統觀念。每年中元節，當地居民都會在此舉行盛大的普渡儀式，祭拜這些無名英雄。同歸所的存在，不僅是對逝者的尊重，也提醒後人和平的可貴。',
-    type: '石碑',
-    longitude: 121.5242,
-    latitude: 25.1022,
+    name: '百二崁 (Bai Er Kan)',
+    description: '百二崁是通往芝山岩山頂的古老石階步道／參道。根據遊記與導覽資訊，當年若要從山下上到山頂（包括祭祀場所或神社／墓地），往往要透過這段約 120 階左右的石階。\n\n現在百二崁是芝山岩文化史蹟公園的一部分，遊客可以沿著石階或附近木棧道攀登。走上去雖有坡度，但對多數人來說並不困難，是結合自然、地質、人文與運動的輕鬆登山和散步路線。',
+    type: '步道',
+    longitude: 121.5303593,
+    latitude: 25.1015783,
+    //25.1015783,121.5303593
     height: 8,
     year: '清代 (Qing Dynasty)',
-    category: '紀念設施',
+    category: '步道',
     images: [
       '/images/monument.jpg'
     ],
