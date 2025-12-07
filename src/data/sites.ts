@@ -21,10 +21,7 @@ export const historicalSites: HistoricalSite[] = [
       '/images/ruins.jpg',
       '/images/chronology-old.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_1.gltf',
-    modelScale: 1.0,
-    modelHeading: 0,
-    position: [0, 0.5, 0]
+
   },
   {
     id: '2',
@@ -40,10 +37,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/monument.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_2.gltf',
-    modelScale: 0.5,
-    modelHeading: 0,
-    position: [2, 0.2, 2]
+
   },
   {
     id: '3',
@@ -60,10 +54,7 @@ export const historicalSites: HistoricalSite[] = [
       '/images/temple.jpg',
       '/images/view.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_3.gltf',
-    modelScale: 1.2,
-    modelHeading: 0,
-    position: [-2, 0.3, -1]
+
   },
 
   {
@@ -81,10 +72,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/ruins.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_5.gltf',
-    modelScale: 0.8,
-    modelHeading: 0,
-    position: [3, 0.6, -2]
+
   },
 
   {
@@ -102,10 +90,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/ruins.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_6.gltf',
-    modelScale: 1.0,
-    modelHeading: 0,
-    position: [0.5, 0.8, 3]
+
   },
 
   {
@@ -123,10 +108,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/ruins.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_10.gltf',
-    modelScale: 1.0,
-    modelHeading: 0,
-    position: [1.2, 0.3, 1.8]
+
   },
 
   {
@@ -144,10 +126,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/bunker.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_11.gltf',
-    modelScale: 0.9,
-    modelHeading: 0,
-    position: [-0.5, 0.15, -2.5]
+
   },
 
   {
@@ -164,10 +143,7 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/monument.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_12.gltf',
-    modelScale: 0.5,
-    modelHeading: 0,
-    position: [2.5, 0.1, 0.5]
+
   },
 
   {
@@ -185,9 +161,6 @@ export const historicalSites: HistoricalSite[] = [
     images: [
       '/images/temple.jpg'
     ],
-    modelUrl: '/mountain3D/9e7dca72aae0_13.gltf',
-    modelScale: 0.5,
-    modelHeading: 0,
-    position: [2.5, 0.1, 0.5]
+
   }
 ]

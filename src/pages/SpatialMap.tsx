@@ -8,7 +8,7 @@ import { HistoricalSite } from '../types'
 const SpatialMap: React.FC = () => {
     const navigate = useNavigate()
     const [selectedSite, setSelectedSite] = useState<HistoricalSite | null>(
-        historicalSites.find(site => site.modelUrl) || historicalSites[0]
+        historicalSites[0]
     )
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [showInfoCard, setShowInfoCard] = useState(true)
