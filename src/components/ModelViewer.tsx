@@ -34,8 +34,8 @@ function latLonToWorld3D(
   latitude: number,
   longitude: number,
   height: number = 0,
-  centerLat: number = 25.102,
-  centerLon: number = 121.523
+  centerLat: number = 25.103060,
+  centerLon: number = 121.530781
 ): THREE.Vector3 {
   const deltaLat = latitude - centerLat
   const deltaLon = longitude - centerLon
