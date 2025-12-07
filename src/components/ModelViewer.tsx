@@ -34,8 +34,8 @@ function latLonToWorld3D(
   latitude: number,
   longitude: number,
   height: number = 0,
-  centerLat: number = 25.102,
-  centerLon: number = 121.523
+  centerLat: number = 25.103060,
+  centerLon: number = 121.530781
 ): THREE.Vector3 {
   const deltaLat = latitude - centerLat
   const deltaLon = longitude - centerLon
@@ -177,28 +177,20 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
 }
 
 /**
- * 加載所有tile的組件
+ * 加載地形模型的組件
  */
 function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
-  const loadedCountRef = useRef(0)
-  const totalTiles = 100
-  const tileUrls = useMemo(() => Array.from({ length: totalTiles }, (_, i) => `/mountain3D/9e7dca72aae0_${i + 1}.gltf`), [])
+  // 使用新的單一模型文件
+  const url = "/mountain3D_new/mtbigger.glb"
 
-  const handleTileLoaded = () => {
-    loadedCountRef.current += 1
-    if (loadedCountRef.current === totalTiles && onAllLoaded) {
-      // 延遲一下以確保渲染完成
+  // 因為只有一個模型，加載完成即可
+  const handleLoaded = () => {
+    if (onAllLoaded) {
       setTimeout(() => onAllLoaded(), 100)
     }
   }
 
-  return (
-    <>
-      {tileUrls.map((url) => (
-        <TileModel key={url} url={url} onLoaded={handleTileLoaded} />
-      ))}
-    </>
-  )
+  return <TileModel url={url} onLoaded={handleLoaded} />
 }
 
 /**

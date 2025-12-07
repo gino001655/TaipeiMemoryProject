@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Map, Layers, Info, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { Map, Info, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import ModelViewer from '../components/ModelViewer'
 import { historicalSites } from '../data/sites'
 import { HistoricalSite } from '../types'
@@ -8,9 +8,8 @@ import { HistoricalSite } from '../types'
 const SpatialMap: React.FC = () => {
     const navigate = useNavigate()
     const [selectedSite, setSelectedSite] = useState<HistoricalSite | null>(
-        historicalSites.find(site => site.modelUrl) || historicalSites[0]
+        historicalSites[0]
     )
-    const [activeLayer, setActiveLayer] = useState<'prehistoric' | 'qing' | 'modern'>('modern')
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
     const [showInfoCard, setShowInfoCard] = useState(true)
 
@@ -98,31 +97,7 @@ const SpatialMap: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Layer Switcher (Bottom of Sidebar) */}
-                <div className="p-6 border-t border-sepia-500/10 bg-sepia-500/5">
-                    <div className="flex items-center gap-2 mb-3 text-ink-black/70 font-serif text-sm font-bold">
-                        <Layers className="w-4 h-4" />
-                        <span>圖層切換 Layers</span>
-                    </div>
-                    <div className="flex gap-2">
-                        {['史前', '清代', '現代'].map((layer) => {
-                            const layerKey = layer === '史前' ? 'prehistoric' : layer === '清代' ? 'qing' : 'modern';
-                            const isActive = activeLayer === layerKey;
-                            return (
-                                <button
-                                    key={layer}
-                                    onClick={() => setActiveLayer(layerKey as any)}
-                                    className={`flex-1 py-2 text-xs font-serif rounded-sm border transition-all duration-300 ${isActive
-                                        ? 'bg-ink-black text-vintage-paper border-ink-black shadow-md'
-                                        : 'bg-white/50 text-ink-black/60 border-sepia-500/20 hover:border-sepia-500/50'
-                                        }`}
-                                >
-                                    {layer}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
+
             </aside>
 
             {/* Sidebar Toggle Button - Outside sidebar so always visible */}
