@@ -135,8 +135,21 @@ function SiteMarker({
 
 /**
  * 載入單個tile模型
+ * 支援調整模型的大小、角度、位置
  */
-function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
+function TileModel({ 
+  url, 
+  onLoaded,
+  scale = 1,
+  rotation = [0, 0, 0],
+  position = [0, 0, 0]
+}: { 
+  url: string
+  onLoaded?: () => void
+  scale?: number | [number, number, number] // 縮放：可以是單一數值（等比例）或 [x, y, z] 三軸分別縮放
+  rotation?: [number, number, number] // 旋轉角度（弧度）：[x軸, y軸, z軸]
+  position?: [number, number, number] // 位置：[x, y, z]
+}) {
   const { scene } = useGLTF(url)
   const groupRef = useRef<THREE.Group>(null)
 
@@ -149,6 +162,20 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
 
     const addScene = () => {
       if (!clonedScene || !groupRef.current) return
+      
+      // 應用縮放
+      if (typeof scale === 'number') {
+        clonedScene.scale.setScalar(scale)
+      } else {
+        clonedScene.scale.set(scale[0], scale[1], scale[2])
+      }
+      
+      // 應用旋轉（以弧度為單位）
+      clonedScene.rotation.set(rotation[0], rotation[1], rotation[2])
+      
+      // 應用位置
+      clonedScene.position.set(position[0], position[1], position[2])
+      
       clonedScene.updateMatrixWorld(true)
       groupRef.current.add(clonedScene)
       if (onLoaded) onLoaded()
@@ -171,9 +198,28 @@ function TileModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
         }
       })
     }
-  }, [scene, onLoaded])
+  }, [scene, onLoaded, scale, rotation, position])
 
   return <group ref={groupRef} />
+}
+
+/**
+ * 山模型的配置參數
+ * 可以在這裡調整模型的大小、角度、位置
+ */
+const MOUNTAIN_CONFIG = {
+  // 縮放比例：1.0 為原始大小，大於 1.0 放大，小於 1.0 縮小
+  // 可以是單一數值（等比例縮放）或 [x, y, z] 三軸分別縮放
+  scale: 170.0 as number | [number, number, number],
+  
+  // 旋轉角度（弧度）：[x軸旋轉, y軸旋轉, z軸旋轉]
+  // 例如：[0, Math.PI / 4, 0] 表示繞 Y 軸旋轉 45 度
+  // 注意：Math.PI = 180度，Math.PI / 2 = 90度，Math.PI / 4 = 45度
+  rotation: [0, -90*Math.PI/180, 0] as [number, number, number],
+  
+  // 位置偏移：[x, y, z]
+  // 例如：[10, 0, -5] 表示向右移動 10，向下移動 5
+  position: [-20, 30, -20] as [number, number, number]
 }
 
 /**
@@ -190,7 +236,15 @@ function AllTiles({ onAllLoaded }: { onAllLoaded: () => void }) {
     }
   }
 
-  return <TileModel url={url} onLoaded={handleLoaded} />
+  return (
+    <TileModel 
+      url={url} 
+      onLoaded={handleLoaded}
+      scale={MOUNTAIN_CONFIG.scale}
+      rotation={MOUNTAIN_CONFIG.rotation}
+      position={MOUNTAIN_CONFIG.position}
+    />
+  )
 }
 
 /**

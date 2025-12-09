@@ -93,14 +93,18 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ site, onClose }) => {
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">相關圖片</h3>
             <div className="grid grid-cols-2 gap-2">
-              {site.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`${site.name} - 圖片 ${index + 1}`}
-                  className="w-full h-32 object-cover rounded-lg"
-                />
-              ))}
+              {site.images.map((image, index) => {
+                // 處理圖片配置：支援字符串或配置對象
+                const imageUrl = typeof image === 'string' ? image : image.url;
+                return (
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    alt={`${site.name} - 圖片 ${index + 1}`}
+                    className="w-full h-32 object-cover rounded-lg"
+                  />
+                );
+              })}
             </div>
           </div>
         )}
@@ -117,5 +121,9 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ site, onClose }) => {
 }
 
 export default InfoPanel
+
+
+
+
 
 

@@ -17,6 +17,9 @@ interface StorySection {
 }
 
 // 示範資料 - 用戶只需要提供這些資料
+// ⚠️ 修改圖片路徑：請在下方 sections 數組中修改 image 和 images 屬性
+// 圖片路徑格式：'/images/檔案名稱.副檔名'
+// 例如：'/images/芝山岩全景.png'
 const sections: StorySection[] = [
     {
         id: 'cover',
@@ -24,7 +27,7 @@ const sections: StorySection[] = [
         title: '芝山巖的千年記憶',
         subtitle: 'A Thousand Years of Zhishan Rock',
         text: '從遠古海洋到今日山丘，每一層土壤都訴說著不同的故事',
-        image: '/images/exhibit-geology.jpg',
+        image: '/images/芝山岩全景.png',  // ← 修改這裡的圖片路徑
         theme: 'dark'
     },
     {
@@ -32,7 +35,7 @@ const sections: StorySection[] = [
         type: 'sidecar',
         title: '地質演變',
         text: '兩千萬年前，這裡曾是一片汪洋。隨著地殼運動和板塊擠壓，海底的沉積岩層逐漸隆起，形成了今日我們所見的芝山巖。砂岩和頁岩的交錯層理，記錄著這片土地的滄海桑田。',
-        image: '/images/exhibit-geology.jpg',
+        image: '/images/芝山岩.png',  // ← 修改這裡的圖片路徑
         position: 'left',
         theme: 'light'
     },
@@ -41,7 +44,7 @@ const sections: StorySection[] = [
         type: 'fullscreen',
         title: '化石的見證',
         text: '山體上發現的海洋生物化石，向我們訴說著遠古時代的故事。每一塊岩石都承載著千萬年的歷史記憶。',
-        image: '/images/exhibit-geology.jpg',
+        image: '/images/芝山岩神社.png',  // ← 修改這裡的圖片路徑
         theme: 'dark'
     },
     {
@@ -49,7 +52,7 @@ const sections: StorySection[] = [
         type: 'sidecar',
         title: '史前文化遺跡',
         text: '1896年，考古學家在芝山巖發現了豐富的史前遺址。出土的陶器、石器與貝塚，證明了早在數千年前就有人類在此生活。圓山文化層、芝山巖文化層，每一層都代表著不同時期的人類活動。',
-        image: '/images/exhibit-archaeology.jpg',
+        image: '/images/芝山岩神社2.png',  // ← 修改這裡的圖片路徑
         position: 'right',
         theme: 'light'
     },
@@ -57,10 +60,10 @@ const sections: StorySection[] = [
         id: 'arch2',
         type: 'cascade',
         title: '文物探索',
-        images: [
-            '/images/exhibit-archaeology.jpg',
-            '/images/exhibit-history.jpg',
-            '/images/exhibit-geology.jpg'
+        images: [  // ← 修改這裡的圖片路徑（多張圖片）
+            '/images/芝山合約碑記.JPG',
+            '/images/惠濟宮.jpg',
+            '/images/芝山岩隘門.jpg'
         ],
         text: '從打製石器到磨製石器，從素面陶器到彩陶，這些文物讓我們得以窺見史前先民的生活樣貌。',
         theme: 'light'
@@ -70,7 +73,7 @@ const sections: StorySection[] = [
         type: 'sidecar',
         title: '清代軍事防禦',
         text: '清代時期，芝山巖因其地勢險要，成為台北盆地重要的軍事據點。隘門、砲台的設置，展現了當時精密的防禦布局。站在制高點俯瞰台北盆地，你能理解為何這裡會成為兵家必爭之地。',
-        image: '/images/exhibit-history.jpg',
+        image: '/images/芝山岩隘門.jpg',  // ← 修改這裡的圖片路徑
         position: 'left',
         theme: 'light'
     },
@@ -79,7 +82,7 @@ const sections: StorySection[] = [
         type: 'immersive',
         title: '日治教育聖地',
         text: '1895年，日本在芝山巖設立了台灣第一所國語傳習所。六氏先生在此奉獻教育，最終為此犧牲生命。芝山巖神社、學務官僚遭難之碑，這些遺跡見證了那段複雜的歷史。',
-        image: '/images/exhibit-history.jpg',
+        image: '/images/校外教學-台灣神社參拜.png',  // ← 修改這裡的圖片路徑
         theme: 'dark'
     },
     {
@@ -87,7 +90,7 @@ const sections: StorySection[] = [
         type: 'split',
         title: '今日芝山巖',
         text: '如今，芝山巖文化史蹟公園成為台北市民休閒遊憩的好去處。生態步道、文化遺址、歷史建築，在這裡和諧共存。每個週末，都有家庭帶著孩子來這裡親近自然、認識歷史。',
-        image: '/images/exhibit-archaeology.jpg',
+        image: '/images/百二崁.jpg',  // ← 修改這裡的圖片路徑
         theme: 'light'
     }
 ];

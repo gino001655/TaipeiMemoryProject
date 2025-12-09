@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { historicalSites } from '../data/sites';
+import ConfiguredImage from './ConfiguredImage';
 
 const SiteDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -49,11 +50,21 @@ const SiteDetail: React.FC = () => {
                     {/* Image */}
                     {site.images && site.images.length > 0 && (
                         <div className="w-full h-80 md:h-96 rounded-sm overflow-hidden mb-8 border-2 border-sepia-500/20 shadow-inner bg-black/5">
-                            <img
-                                src={site.images[0]}
-                                alt={site.name}
-                                className="w-full h-full object-cover sepia-[0.2]"
-                            />
+                            {(() => {
+                                // 處理圖片配置：支援字符串或配置對象
+                                const firstImage = site.images[0];
+                                const imageUrl = typeof firstImage === 'string' ? firstImage : firstImage.url;
+                                const displayConfig = typeof firstImage === 'string' ? undefined : firstImage.display;
+                                
+                                return (
+                                    <ConfiguredImage
+                                        src={imageUrl}
+                                        alt={site.name}
+                                        containerClassName="w-full h-full"
+                                        displayConfig={displayConfig}
+                                    />
+                                );
+                            })()}
                         </div>
                     )}
 
@@ -67,7 +78,7 @@ const SiteDetail: React.FC = () => {
                     {/* Footer */}
                     <div className="mt-12 pt-6 border-t border-sepia-500/20 flex justify-between items-center">
                         <span className="text-sepia-500 text-sm font-serif italic">
-                            資料來源：芝山岩文史工作室
+                            資料來源：芝山岩文史工作室<br />    
                         </span>
                         <button className="ink-button rounded-sm text-sm">
                             分享此地點
