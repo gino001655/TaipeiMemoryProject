@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, Clock, BookOpen, Menu, X } from 'lucide-react';
+import { Map, Clock, BookOpen, Menu, X, Github, Cloud } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
@@ -55,15 +55,61 @@ const MainLayout: React.FC = () => {
                             </Link>
                         );
                     })}
+                    
+                    {/* External Links */}
+                    <div className="flex items-center gap-4 ml-4 pl-4 border-l border-sepia-500/20">
+                        <a
+                            href="https://github.com/gino001655/TaipeiMemoryProject"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-ink-black hover:text-vermilion transition-colors duration-300 group"
+                            title="GitHub Repository"
+                            aria-label="GitHub Repository"
+                        >
+                            <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        </a>
+                        <a
+                            href="https://drive.google.com/drive/folders/13jRE68y0R6kAOog5uQIh2jh2o0MbFpT2?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-ink-black hover:text-vermilion transition-colors duration-300 group"
+                            title="更多圖片 / More Images"
+                            aria-label="Google Drive - More Images"
+                        >
+                            <Cloud className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        </a>
+                    </div>
                 </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden p-2 text-ink-black hover:text-vermilion transition-colors"
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                    {isMobileMenuOpen ? <X /> : <Menu />}
-                </button>
+                {/* Mobile: External Links + Menu Button */}
+                <div className="md:hidden flex items-center gap-3">
+                    <a
+                        href="https://github.com/gino001655/TaipeiMemoryProject"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-ink-black hover:text-vermilion transition-colors"
+                        title="GitHub"
+                        aria-label="GitHub Repository"
+                    >
+                        <Github className="w-5 h-5" />
+                    </a>
+                    <a
+                        href="https://drive.google.com/drive/folders/13jRE68y0R6kAOog5uQIh2jh2o0MbFpT2?usp=sharing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 text-ink-black hover:text-vermilion transition-colors"
+                        title="更多圖片"
+                        aria-label="Google Drive"
+                    >
+                        <Cloud className="w-5 h-5" />
+                    </a>
+                    <button
+                        className="p-2 text-ink-black hover:text-vermilion transition-colors"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X /> : <Menu />}
+                    </button>
+                </div>
             </nav>
 
             {/* Mobile Navigation Overlay */}
@@ -99,6 +145,30 @@ const MainLayout: React.FC = () => {
                                     <span className="font-serif text-lg">{item.label}</span>
                                 </Link>
                             ))}
+                            
+                            {/* Mobile External Links */}
+                            <div className="pt-4 mt-4 border-t border-sepia-500/20 flex gap-4 justify-center">
+                                <a
+                                    href="https://github.com/gino001655/TaipeiMemoryProject"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="flex items-center gap-2 p-3 rounded-lg text-ink-black hover:bg-black/5 transition-colors"
+                                >
+                                    <Github className="w-5 h-5" />
+                                    <span className="font-serif text-lg">GitHub Repository</span>
+                                </a>
+                                <a
+                                    href="https://drive.google.com/drive/folders/13jRE68y0R6kAOog5uQIh2jh2o0MbFpT2?usp=sharing"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="flex items-center gap-2 p-3 rounded-lg text-ink-black hover:bg-black/5 transition-colors"
+                                >
+                                    <Cloud className="w-5 h-5" />
+                                    <span className="font-serif text-lg">更多圖片</span>
+                                </a>
+                            </div>
                         </motion.div>
                     </>
                 )}

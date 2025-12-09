@@ -4,6 +4,25 @@ import { HistoricalSite } from '../types'
 /**
  * 芝山地區歷史遺跡資料
  * 所有資料都包含經緯度座標，方便後續定位真實景點
+ * 
+ * 位置調整說明：
+ * - longitude (經度): 控制東西方向位置
+ *   * 數值越大 = 越往東（右）
+ *   * 數值越小 = 越往西（左）
+ *   * 芝山地區約在 121.52°E - 121.54°E
+ * 
+ * - latitude (緯度): 控制南北方向位置
+ *   * 數值越大 = 越往北（上）
+ *   * 數值越小 = 越往南（下）
+ *   * 芝山地區約在 25.10°N - 25.11°N
+ * 
+ * - height (高度): 控制標記點在3D地圖中的垂直位置（單位：米）
+ *   * 數值越大 = 標記點越高
+ *   * 建議範圍：5-100 米
+ *   * 可根據實際地形高度調整
+ * 
+ * 地圖中心點：25.103060°N, 121.530781°E
+ * 所有位置都是相對於這個中心點計算的
  */
 export const historicalSites: HistoricalSite[] = [
   {
@@ -18,8 +37,20 @@ export const historicalSites: HistoricalSite[] = [
     year: '史前時代 (Prehistoric)',
     category: '考古遺址',
     images: [
-      '/images/ruins.jpg',
-      '/images/chronology-old.jpg'
+      {
+        url: '/images/芝山岩全景.png',
+        // 開發者可以在這裡配置圖片顯示區域
+        // position: { x: 50, y: 50 } 表示居中 (預設值)
+        // position: { x: 0, y: 0 } 表示顯示左上角
+        // position: { x: 100, y: 100 } 表示顯示右下角
+        // scale: 1.0 表示原始大小 (預設值)
+        // scale: 1.5 表示放大150%
+        // scale: 0.8 表示縮小到80%
+        display: {
+          position: { x: 50, y: 50 }, // 居中顯示
+          scale: 1.0 // 原始大小
+        }
+      }
     ],
 
   },
@@ -35,7 +66,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '碑文',
     images: [
-      '/images/monument.jpg'
+      {
+        url: '/images/芝山合約碑記.JPG',
+        display: {
+          position: { x: 50, y: 0 },  // 位置配置
+          scale: 0.8                    // 縮放配置
+        }
+      }
     ],
 
   },
@@ -51,8 +88,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '宗教建築',
     images: [
-      '/images/temple.jpg',
-      '/images/view.jpg'
+      {
+        url: '/images/惠濟宮.jpg',
+        display: {
+          position: { x: 50, y: 0 },  // 位置配置
+          scale: 0.65                    // 縮放配置
+        }
+      }
     ],
 
   },
@@ -70,7 +112,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '軍事遺跡',
     images: [
-      '/images/ruins.jpg'
+      {
+        url: '/images/芝山岩隘門.jpg',
+        display: {
+          position: { x: 50, y: 0 },  // 位置配置
+          scale: 0.65                    // 縮放配置
+        }
+      }
     ],
 
   },
@@ -88,7 +136,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '石碑',
     images: [
-      '/images/ruins.jpg'
+      {
+        url: '/images/龍應台學務官僚遭難之碑.png',
+        display: {
+          position: { x: 50, y: 0 },  // 位置配置
+          scale: 0.65                    // 縮放配置
+        }
+      }
     ],
 
   },
@@ -106,7 +160,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '墓地',
     images: [
-      '/images/ruins.jpg'
+      {
+        url: '/images/六氏先生之墓.jpeg',
+        display: {
+          position: { x: 50, y: 70 },  // 位置配置
+          scale: 1                   // 縮放配置
+        }
+      }
     ],
 
   },
@@ -124,7 +184,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '戰後 (Post-War)',
     category: '紀念設施',
     images: [
-      '/images/bunker.jpg'
+      {
+        url: '/images/雨農閱覽室.JPG',
+        display: {
+          position: { x: 50, y: 70 },  // 位置配置
+          scale: 1                   // 縮放配置
+        }
+      }
     ],
 
   },
@@ -142,7 +208,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '步道',
     images: [
-      '/images/monument.jpg'
+      {
+        url: '/images/百二崁.jpg',
+        display: {
+          position: { x: 50, y: 20 },  // 位置配置
+          scale: 0.9                   // 縮放配置
+        }
+      }
     ],
 
   },
@@ -160,7 +232,13 @@ export const historicalSites: HistoricalSite[] = [
     year: '清代 (Qing Dynasty)',
     category: '宗教建築',
     images: [
-      '/images/temple.jpg'
+      {
+        url: '/images/聖祐宮.webp',
+        display: {
+          position: { x: 50, y: 20 },  // 位置配置
+          scale: 0.9                   // 縮放配置
+        }
+      }
     ],
 
   }
