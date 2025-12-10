@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, Clock, BookOpen, Menu, X, Github, Cloud } from 'lucide-react';
+import { Map, Clock, BookOpen, Menu, X, Github, Cloud, Scroll } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+    // Scroll detection for navbar visibility
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const controlNavbar = () => {
+            if (typeof window !== 'undefined') {
+                const currentScrollY = window.scrollY;
+
+                // Show if scrolling up or at the very top
+                // Hide if scrolling down and not at the top
+                if (currentScrollY < lastScrollY || currentScrollY < 50) {
+                    setIsVisible(true);
+                } else {
+                    setIsVisible(false);
+                }
+
+                setLastScrollY(currentScrollY);
+            }
+        };
+
+        window.addEventListener('scroll', controlNavbar);
+
+        // Cleanup function
+        return () => {
+            window.removeEventListener('scroll', controlNavbar);
+        };
+    }, [lastScrollY]);
+
     const navItems = [
         { path: '/spatial-map', label: '空間探索 Spatial Map', icon: Map },
         { path: '/chronology', label: '時空軌跡 Chronology', icon: Clock },
         { path: '/exhibits', label: '專題展間 Exhibits', icon: BookOpen },
+        { path: '/history-corridor', label: '歷史迴廊 History Corridor', icon: Scroll, isSub: true },
     ];
 
     return (
         <div className="relative w-full min-h-screen flex flex-col">
             {/* Vintage Navigation Bar */}
-            <nav className="z-50 px-6 py-4 flex items-center justify-between border-b-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm shadow-sm">
+            <nav
+                className={`sticky top-0 z-50 px-6 py-4 flex items-center justify-between border-b-2 border-sepia-500/20 bg-vintage-paper/95 backdrop-blur-sm shadow-sm transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
+                    }`}
+            >
                 <Link to="/" className="flex items-center gap-3 group">
                     <div className="w-10 h-10 bg-ink-black flex items-center justify-center rounded-sm shadow-md group-hover:bg-vermilion transition-colors duration-500">
                         <span className="text-vintage-paper font-serif font-bold text-xl">芝</span>
@@ -39,7 +72,7 @@ const MainLayout: React.FC = () => {
                             <Link
                                 key={item.path}
                                 to={item.path}
-                                className={`relative flex items-center gap-2 px-2 py-1 transition-colors duration-300 group ${isActive ? 'text-vermilion' : 'text-ink-black hover:text-sepia-500'
+                                className={`relative flex items-center gap-2 px-2 py-1 transition-colors duration-300 group ${isActive ? 'text-vermilion' : 'text-ink-black hover:text-sepia-500'} ${(item as any).isSub ? 'ml-3 text-sm opacity-90' : ''}
                                     }`}
                             >
                                 <item.icon className={`w-4 h-4 ${isActive ? 'stroke-2' : 'stroke-1'}`} />
@@ -55,7 +88,7 @@ const MainLayout: React.FC = () => {
                             </Link>
                         );
                     })}
-                    
+
                     {/* External Links */}
                     <div className="flex items-center gap-4 ml-4 pl-4 border-l border-sepia-500/20">
                         <a
@@ -129,7 +162,7 @@ const MainLayout: React.FC = () => {
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
-                            className="absolute top-[72px] left-0 right-0 bg-vintage-paper border-b-2 border-sepia-500/20 shadow-lg z-40 md:hidden flex flex-col p-4 gap-4"
+                            className="fixed top-[72px] left-0 right-0 bg-vintage-paper/95 backdrop-blur-md border-b-2 border-sepia-500/20 shadow-lg z-40 md:hidden flex flex-col p-4 gap-4"
                         >
                             {navItems.map((item) => (
                                 <Link
@@ -138,14 +171,14 @@ const MainLayout: React.FC = () => {
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className={`flex items-center gap-3 p-3 rounded-lg ${location.pathname.startsWith(item.path)
                                         ? 'bg-sepia-500/10 text-vermilion font-bold'
-                                        : 'text-ink-black hover:bg-black/5'
+                                        : 'text-ink-black hover:bg-black/5'} ${(item as any).isSub ? 'ml-8 border-l-2 border-sepia-500/20 pl-4' : ''}
                                         }`}
                                 >
                                     <item.icon className="w-5 h-5" />
                                     <span className="font-serif text-lg">{item.label}</span>
                                 </Link>
                             ))}
-                            
+
                             {/* Mobile External Links */}
                             <div className="pt-4 mt-4 border-t border-sepia-500/20 flex gap-4 justify-center">
                                 <a

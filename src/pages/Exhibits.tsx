@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, X } from 'lucide-react';
 import StoneViewer from '../components/StoneViewer';
 
 // 定義各種 section 類型
-type SectionType = 'model' | 'cover' | 'sidecar' | 'fullscreen' | 'split' | 'cascade' | 'immersive';
+type SectionType = 'model' | 'cover' | 'sidecar' | 'fullscreen' | 'split' | 'cascade' | 'immersive' | 'quad-grid' | 'scrolling-text' | 'cta';
 
 interface StorySection {
     id: string;
@@ -11,10 +13,15 @@ interface StorySection {
     title?: string;
     subtitle?: string;
     text?: string;
+    paragraphs?: string[]; // 用於多段落滾動敘事
     image?: string;
     images?: string[];
     position?: 'left' | 'right' | 'center';
+    mapCoordinates?: { lat: number; lng: number };
+    linkUrl?: string;
+    linkText?: string;
     theme?: 'light' | 'dark';
+    gridItems?: { title: string; image: string }[];
 }
 
 // 示範資料 - 用戶只需要提供這些資料
@@ -30,74 +37,36 @@ const sections: StorySection[] = [
     {
         id: 'cover',
         type: 'cover',
-        title: '芝山巖的千年記憶',
-        subtitle: 'A Thousand Years of Zhishan Rock',
-        text: '從遠古海洋到今日山丘，每一層土壤都訴說著不同的故事',
+        title: '一座山能有\n什麼歷史？',
+        subtitle: '',
+        text: '我所知道的芝山巖\n以及你所不知道的芝山巖',
         image: '/images/芝山岩全景.png',  // ← 修改這裡的圖片路徑
         theme: 'dark'
     },
     {
         id: 'geo1',
         type: 'sidecar',
-        title: '地質演變',
-        text: '兩千萬年前，這裡曾是一片汪洋。隨著地殼運動和板塊擠壓，海底的沉積岩層逐漸隆起，形成了今日我們所見的芝山巖。砂岩和頁岩的交錯層理，記錄著這片土地的滄海桑田。',
-        image: '/images/芝山岩.png',  // ← 修改這裡的圖片路徑
+        title: '何來之山巖？',
+        text: '',
+        mapCoordinates: { lat: 25.1030552, lng: 121.5310745 },
+        linkUrl: 'https://zh.wikipedia.org/zh-tw/%E8%8A%9D%E5%B1%B1%E5%B2%A9',
+        linkText: '點我查看維基百科',
         position: 'left',
         theme: 'light'
     },
     {
-        id: 'geo2',
-        type: 'fullscreen',
-        title: '化石的見證',
-        text: '山體上發現的海洋生物化石，向我們訴說著遠古時代的故事。每一塊岩石都承載著千萬年的歷史記憶。',
-        image: '/images/芝山岩神社.png',  // ← 修改這裡的圖片路徑
-        theme: 'dark'
-    },
-    {
-        id: 'arch1',
-        type: 'sidecar',
-        title: '史前文化遺跡',
-        text: '1896年，考古學家在芝山巖發現了豐富的史前遺址。出土的陶器、石器與貝塚，證明了早在數千年前就有人類在此生活。圓山文化層、芝山巖文化層，每一層都代表著不同時期的人類活動。',
-        image: '/images/芝山岩神社2.png',  // ← 修改這裡的圖片路徑
-        position: 'right',
-        theme: 'light'
-    },
-    {
-        id: 'arch2',
-        type: 'cascade',
-        title: '文物探索',
-        images: [  // ← 修改這裡的圖片路徑（多張圖片）
-            '/images/芝山合約碑記.JPG',
-            '/images/惠濟宮.jpg',
-            '/images/芝山岩隘門.jpg'
+        id: 'story-intro',
+        type: 'scrolling-text',
+        paragraphs: [
+            "如果你回到 120 年前的日治時代，走上這座山，你是在參拜『神』。當時的人告訴你，這裡有六位日本老師被壞人殺害了，他們是教育的守護神，這裡是全台灣最神聖的教育聖地。",
+            "但如果你把時光機快轉到戰後的國民政府時期，同一個地點，故事卻完全反轉了。當年的『壞人』變成了『抗日義民』，而原本的『神』變成了『侵略者』。",
+            "殺人的，到底是暴徒還是英雄？\n被殺的，到底是烈士還是入侵者？"
         ],
-        text: '從打製石器到磨製石器，從素面陶器到彩陶，這些文物讓我們得以窺見史前先民的生活樣貌。',
-        theme: 'light'
-    },
-    {
-        id: 'history1',
-        type: 'sidecar',
-        title: '清代軍事防禦',
-        text: '清代時期，芝山巖因其地勢險要，成為台北盆地重要的軍事據點。隘門、砲台的設置，展現了當時精密的防禦布局。站在制高點俯瞰台北盆地，你能理解為何這裡會成為兵家必爭之地。',
-        image: '/images/芝山岩隘門.jpg',  // ← 修改這裡的圖片路徑
-        position: 'left',
-        theme: 'light'
-    },
-    {
-        id: 'edu1',
-        type: 'immersive',
-        title: '日治教育聖地',
-        text: '1895年，日本在芝山巖設立了台灣第一所國語傳習所。六氏先生在此奉獻教育，最終為此犧牲生命。芝山巖神社、學務官僚遭難之碑，這些遺跡見證了那段複雜的歷史。',
-        image: '/images/校外教學-台灣神社參拜.png',  // ← 修改這裡的圖片路徑
         theme: 'dark'
     },
     {
-        id: 'present',
-        type: 'split',
-        title: '今日芝山巖',
-        text: '如今，芝山巖文化史蹟公園成為台北市民休閒遊憩的好去處。生態步道、文化遺址、歷史建築，在這裡和諧共存。每個週末，都有家庭帶著孩子來這裡親近自然、認識歷史。',
-        image: '/images/百二崁.jpg',  // ← 修改這裡的圖片路徑
-        theme: 'light'
+        id: 'cta-section',
+        type: 'cta'
     }
 ];
 
@@ -129,30 +98,32 @@ const CoverSection: React.FC<{ section: StorySection }> = ({ section }) => {
 
             <motion.div
                 style={{ opacity }}
-                className="absolute inset-0 flex items-center justify-center text-center px-4"
+                className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-4"
             >
-                <div className="max-w-4xl">
+                <div className="max-w-7xl relative flex flex-col items-center">
                     <motion.h1
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="text-6xl md:text-8xl font-serif font-bold text-vintage-paper mb-6"
+                        className="text-7xl md:text-9xl font-serif font-bold text-vintage-paper mb-12 md:mb-10 leading-normal [writing-mode:vertical-rl] whitespace-pre-wrap h-[50vh] md:h-[60vh] flex items-center"
                     >
                         {section.title}
                     </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.6 }}
-                        className="text-2xl md:text-3xl text-vintage-paper/90 font-display italic mb-8"
-                    >
-                        {section.subtitle}
-                    </motion.p>
+                    {section.subtitle && (
+                        <motion.p
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, delay: 0.6 }}
+                            className="text-xl md:text-3xl text-vintage-paper/90 font-display italic mb-8 md:mb-8"
+                        >
+                            {section.subtitle}
+                        </motion.p>
+                    )}
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1, delay: 0.9 }}
-                        className="text-xl md:text-2xl text-vintage-paper/80 font-serif leading-relaxed"
+                        className="text-lg md:text-2xl text-vintage-paper/80 font-serif leading-loose tracking-wide whitespace-pre-line"
                     >
                         {section.text}
                     </motion.p>
@@ -179,33 +150,116 @@ const SidecarSection: React.FC<{ section: StorySection }> = ({ section }) => {
     return (
         <div ref={ref} className="relative min-h-screen w-full flex items-center">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 items-center">
-                {/* Image */}
+                {/* Image or Map */}
                 <motion.div
                     style={{ y: imageY }}
-                    className={`relative h-screen overflow-hidden ${isLeft ? 'order-1' : 'order-1 lg:order-2'}`}
+                    className={`relative h-auto aspect-square lg:h-screen lg:aspect-auto overflow-hidden ${isLeft ? 'order-2 lg:order-1' : 'order-2'}`}
                 >
-                    <div
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{
-                            backgroundImage: `url(${section.image})`,
-                            filter: 'sepia(0.2)'
-                        }}
-                    />
-                </motion.div>
+                    {section.mapCoordinates ? (
+                        <div className="w-full h-full px-8 py-8 md:p-12">
+                            <div className="w-full h-full rounded-3xl overflow-hidden shadow-xl border border-vintage-paper/20">
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    frameBorder="0"
+                                    scrolling="no"
+                                    marginHeight={0}
+                                    marginWidth={0}
+                                    src={`https://maps.google.com/maps?q=${section.mapCoordinates.lat},${section.mapCoordinates.lng}&z=15&output=embed`}
+                                    style={{
+                                        filter: 'grayscale(0.2) contrast(1.1)',
+                                        pointerEvents: 'auto'
+                                    }}
+                                    title={section.title}
+                                ></iframe >
+                            </div >
+                        </div >
+                    ) : (
+                        <div
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{
+                                backgroundImage: `url(${section.image})`,
+                                filter: 'sepia(0.2)'
+                            }}
+                        />
+                    )}
+                </motion.div >
 
                 {/* Text */}
-                <motion.div
+                < motion.div
                     style={{ opacity: textOpacity, y: textY }}
-                    className={`relative px-8 md:px-16 py-20 ${isLeft ? 'order-2' : 'order-2 lg:order-1'} ${section.theme === 'dark' ? 'bg-ink-black text-vintage-paper' : 'bg-vintage-paper text-ink-black'
-                        }`}
+                    className={`relative px-8 md:px-16 py-20 ${isLeft ? 'order-1 lg:order-2' : 'order-1'
+                        } ${section.theme === 'dark' ? 'bg-ink-black text-vintage-paper' : 'bg-vintage-paper text-ink-black'
+                        } ${section.id === 'geo1' ? 'text-right flex flex-col items-end mr-[10px]' : ''}`}
                 >
                     <h2 className="text-4xl md:text-6xl font-serif font-bold mb-6">
                         {section.title}
                     </h2>
-                    <p className="text-lg md:text-xl font-serif leading-loose">
-                        {section.text}
-                    </p>
+                    {
+                        section.text && (
+                            <p className="text-lg md:text-xl font-serif leading-loose mb-8">
+                                {section.text}
+                            </p>
+                        )
+                    }
+                    {
+                        section.linkUrl && (
+                            <a
+                                href={section.linkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-block mt-8 px-8 py-3 border-2 font-serif text-lg transition-all duration-300 ${section.theme === 'dark'
+                                    ? 'border-vintage-paper text-vintage-paper hover:bg-vintage-paper hover:text-ink-black'
+                                    : 'border-ink-black text-ink-black hover:bg-ink-black hover:text-vintage-paper'
+                                    }`}
+                            >
+                                {section.linkText || 'Learn More'}
+                            </a>
+                        )
+                    }
+                </motion.div >
+            </div >
+        </div >
+    );
+};
+
+// Quad Grid Section - 歷史分期入口 (CTA)
+const QuadGridSection: React.FC<{ section: StorySection }> = ({ section }) => {
+    return (
+        <div className="relative w-full h-[60vh] flex items-center justify-center bg-vintage-paper">
+            <div className="text-center px-6">
+                <motion.h2
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-4xl md:text-6xl font-serif font-bold text-ink-black mb-12"
+                >
+                    {section.title}
+                </motion.h2>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <Link
+                        to="/chronology"
+                        className="inline-flex items-center gap-3 px-10 py-4 bg-vermilion text-vintage-paper rounded-full text-xl font-serif font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl group"
+                    >
+                        <span>點我進入歷史迴廊</span>
+                        <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                 </motion.div>
+
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-8 text-ink-black/60 font-serif text-lg"
+                >
+                    探索史前、清領、日治與戰後的時空變遷
+                </motion.p>
             </div>
         </div>
     );
@@ -405,11 +459,102 @@ const SplitSection: React.FC<{ section: StorySection }> = ({ section }) => {
     );
 };
 
+// Scrolling Text Section - 滾動敘事
+const ScrollingTextSection: React.FC<{ section: StorySection }> = ({ section }) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start start", "end start"]
+    });
+
+    const p1Opacity = useTransform(scrollYProgress, [0.05, 0.15, 0.25, 0.3], [0, 1, 1, 0]);
+    const p1Y = useTransform(scrollYProgress, [0.05, 0.15, 0.3], [30, 0, -30]);
+
+    const p2Opacity = useTransform(scrollYProgress, [0.35, 0.45, 0.55, 0.6], [0, 1, 1, 0]);
+    const p2Y = useTransform(scrollYProgress, [0.35, 0.45, 0.6], [30, 0, -30]);
+
+    const p3Opacity = useTransform(scrollYProgress, [0.65, 0.75, 0.85, 0.95], [0, 1, 1, 0]);
+    const p3Y = useTransform(scrollYProgress, [0.65, 0.75, 1], [30, 0, 0]); // 最後一段停留久一點，不往上飄走
+
+    return (
+        <div ref={ref} className="relative h-[400vh] w-full bg-ink-black">
+            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+                {/* Background decoration or texture */}
+                <div className="absolute inset-0 bg-[url('/images/texture-paper.png')] opacity-10" />
+
+                <div className="w-full h-full max-w-xl px-6 relative z-10 text-center">
+                    {section.paragraphs && section.paragraphs[0] && (
+                        <motion.p
+                            style={{ opacity: p1Opacity, y: p1Y }}
+                            className="absolute top-[30%] left-0 right-0 -translate-y-1/2 text-2xl md:text-3xl text-vintage-paper font-serif leading-loose px-6"
+                        >
+                            {section.paragraphs[0]}
+                        </motion.p>
+                    )}
+
+                    {section.paragraphs && section.paragraphs[1] && (
+                        <motion.p
+                            style={{ opacity: p2Opacity, y: p2Y }}
+                            className="absolute top-[30%] left-0 right-0 -translate-y-1/2 text-2xl md:text-3xl text-vintage-paper font-serif leading-loose px-6"
+                        >
+                            {section.paragraphs[1]}
+                        </motion.p>
+                    )}
+
+                    {section.paragraphs && section.paragraphs[2] && (
+                        <motion.div
+                            style={{ opacity: p3Opacity, y: p3Y }}
+                            className="absolute top-[30%] left-0 right-0 -translate-y-1/2 px-6"
+                        >
+                            <p className="text-3xl md:text-5xl text-vermilion font-serif font-bold leading-normal whitespace-pre-line">
+                                {section.paragraphs[2]}
+                            </p>
+                        </motion.div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// CTA Section - 獨立按鈕區塊
+const CTASection: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+        <div className="relative w-full h-[50vh] bg-ink-black flex items-center justify-center">
+            {/* Background decoration to match previous section */}
+            <div className="absolute inset-0 bg-[url('/images/texture-paper.png')] opacity-10" />
+
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative z-10"
+            >
+                <button
+                    onClick={onClick}
+                    className="inline-flex items-center gap-3 px-12 py-5 bg-vermilion text-vintage-paper rounded-full text-2xl font-serif font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl group"
+                >
+                    <span>點我進入歷史迴廊</span>
+                    <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                </button>
+            </motion.div>
+        </div>
+    );
+};
+
 // Main Component
 const Exhibits: React.FC = () => {
+    const navigate = useNavigate();
+    const [showAd, setShowAd] = useState(false);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handleAdClose = () => {
+        setShowAd(false);
+        navigate('/history-corridor');
+    };
 
     const renderSection = (section: StorySection) => {
         switch (section.type) {
@@ -419,22 +564,81 @@ const Exhibits: React.FC = () => {
                 return <CoverSection key={section.id} section={section} />;
             case 'sidecar':
                 return <SidecarSection key={section.id} section={section} />;
-            case 'fullscreen':
-                return <FullscreenSection key={section.id} section={section} />;
-            case 'cascade':
-                return <CascadeSection key={section.id} section={section} />;
-            case 'immersive':
-                return <ImmersiveSection key={section.id} section={section} />;
-            case 'split':
-                return <SplitSection key={section.id} section={section} />;
+            case 'scrolling-text':
+                return <ScrollingTextSection key={section.id} section={section} />;
+            case 'cta':
+                return <CTASection key={section.id} onClick={() => setShowAd(true)} />;
             default:
                 return null;
         }
     };
 
     return (
-        <div className="w-full bg-vintage-paper overflow-x-hidden">
+        <div className="w-full bg-vintage-paper">
             {sections.map(renderSection)}
+
+            {/* Ad Modal */}
+            <AnimatePresence>
+                {showAd && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={handleAdClose}
+                            className="absolute inset-0 bg-ink-black/60 backdrop-blur-sm"
+                        />
+
+                        {/* Modal Card */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden z-10 border-4 border-gray-200"
+                        >
+                            {/* Close Button */}
+                            <button
+                                onClick={handleAdClose}
+                                className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-20"
+                            >
+                                <X className="w-6 h-6 text-white" />
+                            </button>
+
+                            {/* Image Section */}
+                            <div className="w-full h-64 overflow-hidden relative">
+                                <img
+                                    src="/images/course_ad.png"
+                                    alt="Course Advertisement"
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                <div className="absolute bottom-4 left-6 text-white font-sans font-bold tracking-widest text-shadow">
+                                    特別推薦
+                                </div>
+                            </div>
+
+                            {/* Text Section */}
+                            <div className="p-8 text-center bg-white">
+                                <h3 className="text-xl md:text-2xl font-sans font-bold text-gray-900 mb-4 leading-relaxed">
+                                    想做出這樣的互動式網頁嗎？
+                                </h3>
+                                <p className="text-gray-700 font-sans leading-loose text-lg">
+                                    歡迎來修黃鐘揚教授的
+                                    <br />
+                                    <span className="text-blue-600 font-bold text-2xl mx-1 block my-2">
+                                        「網路服務程式設計」
+                                    </span>
+                                    喔！
+                                </p>
+                                <p className="text-gray-400 text-sm font-sans mt-4">
+                                    （但教授說以後不開了嗚嗚）
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
