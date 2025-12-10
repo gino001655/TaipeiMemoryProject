@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import StoneViewer from '../components/StoneViewer';
 
 // 定義各種 section 類型
-type SectionType = 'cover' | 'sidecar' | 'fullscreen' | 'split' | 'cascade' | 'immersive';
+type SectionType = 'model' | 'cover' | 'sidecar' | 'fullscreen' | 'split' | 'cascade' | 'immersive';
 
 interface StorySection {
     id: string;
@@ -21,6 +22,11 @@ interface StorySection {
 // 圖片路徑格式：'/images/檔案名稱.副檔名'
 // 例如：'/images/芝山岩全景.png'
 const sections: StorySection[] = [
+    {
+        id: 'stone-model',
+        type: 'model',
+        title: 'Stone Artifact',
+    },
     {
         id: 'cover',
         type: 'cover',
@@ -407,6 +413,8 @@ const Exhibits: React.FC = () => {
 
     const renderSection = (section: StorySection) => {
         switch (section.type) {
+            case 'model':
+                return <StoneViewer key={section.id} />;
             case 'cover':
                 return <CoverSection key={section.id} section={section} />;
             case 'sidecar':
