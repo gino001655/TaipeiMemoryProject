@@ -7,22 +7,24 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig({
   plugins: [
     react(),
-    // Gzip compression
-    viteCompression({
-      verbose: true,
-      disable: false,
-      threshold: 10240, // 只壓縮大於 10KB 的檔案
-      algorithm: 'gzip',
-      ext: '.gz',
-    }),
-    // Brotli compression (更好的壓縮率)
-    viteCompression({
-      verbose: true,
-      disable: false,
-      threshold: 10240,
-      algorithm: 'brotliCompress',
-      ext: '.br',
-    }),
+    // Gzip compression - 暫時禁用以測試構建
+    // viteCompression({
+    //   verbose: true,
+    //   disable: false,
+    //   threshold: 10240,
+    //   algorithm: 'gzip',
+    //   ext: '.gz',
+    //   deleteOriginFile: false,
+    // }),
+    // Brotli compression - 暫時禁用以測試構建
+    // viteCompression({
+    //   verbose: true,
+    //   disable: false,
+    //   threshold: 10240,
+    //   algorithm: 'brotliCompress',
+    //   ext: '.br',
+    //   deleteOriginFile: false,
+    // }),
     // Bundle 分析工具 (建置後會生成 stats.html)
     visualizer({
       filename: './dist/stats.html',
@@ -41,26 +43,8 @@ export default defineConfig({
 
     rollupOptions: {
       output: {
-        // 手動配置 chunk 分割策略
-        manualChunks(id) {
-          // 將 node_modules 中的庫分組
-          if (id.includes('node_modules')) {
-            // React 相關庫單獨打包
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor'
-            }
-            // Three.js 和 3D 相關庫單獨打包
-            if (id.includes('three') || id.includes('@react-three')) {
-              return 'three-vendor'
-            }
-            // Framer Motion 單獨打包
-            if (id.includes('framer-motion')) {
-              return 'framer-vendor'
-            }
-            // 其他第三方庫
-            return 'vendor'
-          }
-        },
+        // 使用 Vite 自動 chunk 分割，確保依賴關係正確
+        manualChunks: undefined, // 讓 Vite 自動處理
       },
     },
 
@@ -73,19 +57,25 @@ export default defineConfig({
     // 來源映射（生產環境可設為 false 以減少檔案大小）
     sourcemap: false,
 
-    // 壓縮選項
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // 移除 console.log
-        drop_debugger: true,
-      },
-    },
+    // 壓縮選項 - 使用 esbuild（更快更穩定）
+    minify: 'esbuild',
   },
 
   // 優化依賴項預編譯
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@react-three/fiber', '@react-three/drei'],
+    include: [
+      'react',
+      'react-dom',
+      'react/jsx-runtime',
+      'react-router-dom',
+      '@react-three/fiber',
+      '@react-three/drei',
+      'three'
+    ],
+  },
+  
+  // 確保 React 正確解析
+  resolve: {
+    dedupe: ['react', 'react-dom'],
   },
 })
