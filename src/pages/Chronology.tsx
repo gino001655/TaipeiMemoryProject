@@ -40,7 +40,7 @@ const Chronology: React.FC = () => {
                         {/* Connecting Line */}
                         <div className="absolute top-1/2 left-8 right-8 h-[2px] bg-gradient-to-r from-sepia-500/30 via-vermilion/50 to-sepia-500/30 -z-10" />
 
-                        {chronologyEvents.map((event, index) => (
+                        {chronologyEvents.map((event) => (
                             <button
                                 key={event.id}
                                 onClick={() => setActiveEventId(event.id)}

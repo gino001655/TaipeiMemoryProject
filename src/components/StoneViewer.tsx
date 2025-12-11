@@ -24,7 +24,24 @@ const StoneViewer: React.FC = () => {
     return (
         <div className="relative h-screen w-full bg-vintage-paper flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0">
-                <Canvas shadows camera={{ position: [0, 0, 4], fov: 50 }}>
+                <Canvas
+                    shadows
+                    camera={{ position: [0, 0, 4], fov: 50 }}
+                    gl={{
+                        preserveDrawingBuffer: true,
+                        failIfMajorPerformanceCaveat: false
+                    }}
+                    onCreated={({ gl }) => {
+                        // Add context loss/restore handlers
+                        gl.domElement.addEventListener('webglcontextlost', (event) => {
+                            event.preventDefault();
+                            console.warn('WebGL context lost in StoneViewer. Attempting to restore...');
+                        });
+                        gl.domElement.addEventListener('webglcontextrestored', () => {
+                            console.log('WebGL context restored in StoneViewer.');
+                        });
+                    }}
+                >
                     <Suspense fallback={null}>
                         <Stage environment="city" intensity={0.6}>
                             <StoneModel />

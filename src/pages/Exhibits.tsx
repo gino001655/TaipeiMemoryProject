@@ -224,6 +224,7 @@ const SidecarSection: React.FC<{ section: StorySection }> = ({ section }) => {
 };
 
 // Quad Grid Section - 歷史分期入口 (CTA)
+// @ts-ignore - Component defined for future use
 const QuadGridSection: React.FC<{ section: StorySection }> = ({ section }) => {
     return (
         <div className="relative w-full h-[60vh] flex items-center justify-center bg-vintage-paper">
@@ -266,6 +267,7 @@ const QuadGridSection: React.FC<{ section: StorySection }> = ({ section }) => {
 };
 
 // Fullscreen Section - 全螢幕文字覆蓋
+// @ts-ignore - Component defined for future use
 const FullscreenSection: React.FC<{ section: StorySection }> = ({ section }) => {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -309,6 +311,7 @@ const FullscreenSection: React.FC<{ section: StorySection }> = ({ section }) => 
 };
 
 // Cascade Section - 瀑布式圖片
+// @ts-ignore - Component defined for future use
 const CascadeSection: React.FC<{ section: StorySection }> = ({ section }) => {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -369,6 +372,7 @@ const CascadeSection: React.FC<{ section: StorySection }> = ({ section }) => {
 };
 
 // Immersive Section - 沉浸式體驗
+// @ts-ignore - Component defined for future use
 const ImmersiveSection: React.FC<{ section: StorySection }> = ({ section }) => {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -417,6 +421,7 @@ const ImmersiveSection: React.FC<{ section: StorySection }> = ({ section }) => {
 };
 
 // Split Section - 左右分割
+// @ts-ignore - Component defined for future use
 const SplitSection: React.FC<{ section: StorySection }> = ({ section }) => {
     const ref = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
