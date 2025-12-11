@@ -29,11 +29,11 @@ interface StorySection {
 // 圖片路徑格式：'/images/檔案名稱.副檔名'
 // 例如：'/images/芝山岩全景.png'
 const sections: StorySection[] = [
-    {
-        id: 'stone-model',
-        type: 'model',
-        title: 'Stone Artifact',
-    },
+    // {
+    //     id: 'stone-model',
+    //     type: 'model',
+    //     title: 'Stone Artifact',
+    // },
     {
         id: 'cover',
         type: 'cover',
@@ -520,7 +520,7 @@ const ScrollingTextSection: React.FC<{ section: StorySection }> = ({ section }) 
 // CTA Section - 獨立按鈕區塊
 const CTASection: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
-        <div className="relative w-full h-[50vh] bg-ink-black flex items-center justify-center">
+        <div className="relative w-full h-[50vh] bg-ink-black flex items-center justify-center -mt-[1px]">
             {/* Background decoration to match previous section */}
             <div className="absolute inset-0 bg-[url('/images/texture-paper.png')] opacity-10" />
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const slides = [
     {
@@ -21,6 +22,7 @@ const slides = [
 ];
 
 const JapaneseColonial: React.FC = () => {
+    const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => {
@@ -29,6 +31,18 @@ const JapaneseColonial: React.FC = () => {
 
     const prevSlide = () => {
         setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+
+    const handleReadMore = () => {
+        const currentSlide = slides[currentIndex];
+        // 第一張卡片 (芝山岩事件) 連到 1895-1896
+        if (currentSlide.id === 1) {
+            navigate('/chronology', { state: { activeId: 'japanese-incident' } });
+        }
+        // 第二、三張卡片 (神社、參道) 都連到 1896-1930
+        else if (currentSlide.id === 2 || currentSlide.id === 3) {
+            navigate('/chronology', { state: { activeId: 'japanese-shrine' } });
+        }
     };
 
     return (
@@ -69,7 +83,10 @@ const JapaneseColonial: React.FC = () => {
 
                                 {/* Right Aligned Button */}
                                 <div className="order-3 md:order-2 shrink-0">
-                                    <button className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md">
+                                    <button
+                                        onClick={handleReadMore}
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
+                                    >
                                         <span>點我查看更多</span>
                                         <ArrowRight className="w-5 h-5" />
                                     </button>
@@ -100,8 +117,8 @@ const JapaneseColonial: React.FC = () => {
                             key={index}
                             onClick={() => setCurrentIndex(index)}
                             className={`w-3 h-3 rounded-full transition-all duration-300 shadow-sm ${index === currentIndex
-                                    ? 'bg-vermilion w-8'
-                                    : 'bg-white/70 hover:bg-white'
+                                ? 'bg-vermilion w-8'
+                                : 'bg-white/70 hover:bg-white'
                                 }`}
                         />
                     ))}

@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { chronologyEvents, ChronologyEvent } from '../data/chronologyData';
 
 const Chronology: React.FC = () => {
+    const location = useLocation();
     const [activeEventId, setActiveEventId] = useState(chronologyEvents[0].id);
     const [selectedEvent, setSelectedEvent] = useState<ChronologyEvent | null>(null);
+
+    useEffect(() => {
+        if (location.state && location.state.activeId) {
+            setActiveEventId(location.state.activeId);
+            // Optional: scroll to the event or just let the view update
+        }
+    }, [location.state]);
 
     const activeEvent = chronologyEvents.find(e => e.id === activeEventId) || chronologyEvents[0];
 
@@ -40,8 +49,8 @@ const Chronology: React.FC = () => {
                             >
                                 {/* Timeline Node */}
                                 <div className={`w-5 h-5 rounded-full border-2 transition-all duration-300 ${activeEventId === event.id
-                                        ? 'bg-vermilion border-vermilion shadow-lg shadow-vermilion/50'
-                                        : 'bg-vintage-paper border-sepia-500 group-hover:border-vermilion group-hover:scale-110'
+                                    ? 'bg-vermilion border-vermilion shadow-lg shadow-vermilion/50'
+                                    : 'bg-vintage-paper border-sepia-500 group-hover:border-vermilion group-hover:scale-110'
                                     }`}>
                                     {activeEventId === event.id && (
                                         <motion.div
@@ -82,8 +91,8 @@ const Chronology: React.FC = () => {
                         {/* Images Grid */}
                         {activeEvent.images.length > 0 && (
                             <div className={`grid gap-4 ${activeEvent.images.length === 1 ? 'grid-cols-1' :
-                                    activeEvent.images.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
-                                        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                                activeEvent.images.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
+                                    'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
                                 }`}>
                                 {activeEvent.images.map((image, idx) => (
                                     <motion.div

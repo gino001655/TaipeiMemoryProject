@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const slides = [
     {
@@ -21,6 +22,7 @@ const slides = [
 ];
 
 const QingDynasty: React.FC = () => {
+    const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => {
@@ -29,6 +31,23 @@ const QingDynasty: React.FC = () => {
 
     const prevSlide = () => {
         setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+
+    const handleReadMore = () => {
+        const currentSlide = slides[currentIndex];
+        // 點擊第一張卡片 (惠濟宮) 跳轉到時空軌跡的乾隆十七年
+        if (currentSlide.id === 1) {
+            navigate('/chronology', { state: { activeId: 'qing-settlement' } });
+        }
+        // 點擊第二張卡片 (同歸所) 跳轉到時空軌跡的乾隆五十一年
+        else if (currentSlide.id === 2) {
+            navigate('/chronology', { state: { activeId: 'qing-linshungwen' } });
+        }
+        // 點擊第三張卡片 (石碑) 跳轉到時空軌跡的嘉慶十年
+        else if (currentSlide.id === 3) {
+            navigate('/chronology', { state: { activeId: 'qing-legal' } });
+        }
+        // 未來可以擴充其他卡片的連結邏輯
     };
 
     return (
@@ -44,32 +63,35 @@ const QingDynasty: React.FC = () => {
                         transition={{ duration: 0.5, ease: "easeInOut" }}
                         className="absolute inset-0 flex flex-col"
                     >
-                        {/* Image Area - 佔滿寬度，高度自適應或填滿剩餘空間 */}
+                        {/* Image Area */}
                         <div className="flex-1 w-full relative overflow-hidden group">
                             <div
                                 className="w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105"
                                 style={{
                                     backgroundImage: `url(${slides[currentIndex].image})`,
-                                    backgroundSize: 'cover' // 或 'contain' 取決於是否允許留白，'cover' 佔滿視覺感較好但可能裁切
+                                    backgroundSize: 'cover'
                                 }}
                             />
-                            {/* 漸層遮罩，讓下方文字更容易過渡 */}
+                            {/* 漸層遮罩 */}
                             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-vintage-paper to-transparent" />
                         </div>
 
-                        {/* Content Area - 圖片下方 */}
+                        {/* Content Area */}
                         <div className="w-full bg-vintage-paper px-6 py-6 md:py-10 border-t-4 border-vermilion">
                             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-                                {/* Centered Description (Taking up middle space) */}
+                                {/* Centered Description */}
                                 <div className="flex-1 text-center order-2 md:order-1">
                                     <p className="text-xl md:text-2xl text-ink-black font-serif font-medium leading-relaxed tracking-wide">
                                         {slides[currentIndex].description}
                                     </p>
                                 </div>
 
-                                {/* Right Aligned Button (On mobile it might stack) */}
+                                {/* Right Aligned Button */}
                                 <div className="order-3 md:order-2 shrink-0">
-                                    <button className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md">
+                                    <button
+                                        onClick={handleReadMore}
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
+                                    >
                                         <span>點我查看更多</span>
                                         <ArrowRight className="w-5 h-5" />
                                     </button>

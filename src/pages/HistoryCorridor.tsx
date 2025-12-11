@@ -6,7 +6,8 @@ const periods = [
     {
         title: '史前時代',
         image: '/images/prehistoric_era.png',
-        description: '從原始的自然與簡單的聚落開始，先民在大自然的懷抱中生活。'
+        description: '從原始的自然與簡單的聚落開始，先民在大自然的懷抱中生活。',
+        link: '/history/prehistoric'
     },
     {
         title: '清領時期',

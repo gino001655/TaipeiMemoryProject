@@ -6,6 +6,7 @@ import Chronology from './pages/Chronology'
 import HistoryCorridor from './pages/HistoryCorridor'
 import QingDynasty from './pages/QingDynasty'
 import JapaneseColonial from './pages/JapaneseColonial'
+import Prehistoric from './pages/Prehistoric'
 import Exhibits from './pages/Exhibits'
 import ExhibitDetail from './pages/ExhibitDetail'
 import SiteDetail from './components/SiteDetail'
@@ -19,6 +20,7 @@ function App() {
           <Route path="/spatial-map" element={<SpatialMap />} />
           <Route path="/chronology" element={<Chronology />} />
           <Route path="/history-corridor" element={<HistoryCorridor />} />
+          <Route path="/history/prehistoric" element={<Prehistoric />} />
           <Route path="/history/qing-dynasty" element={<QingDynasty />} />
           <Route path="/history/japanese-colonial" element={<JapaneseColonial />} />
           <Route path="/exhibits" element={<Exhibits />} />
