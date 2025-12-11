@@ -12,6 +12,7 @@ import Exhibits from './pages/Exhibits'
 import ExhibitDetail from './pages/ExhibitDetail'
 import SiteDetail from './components/SiteDetail'
 import References from './pages/References'
+import QRCodePage from './pages/QRCodePage'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/exhibit/:id" element={<ExhibitDetail />} />
           <Route path="/site/:id" element={<SiteDetail />} />
           <Route path="/references" element={<References />} />
+          <Route path="/admin/qrcode" element={<QRCodePage />} />
         </Route>
       </Routes>
     </Router>
