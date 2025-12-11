@@ -26,7 +26,7 @@ const Home: React.FC = () => {
             title: '專題展間',
             subtitle: 'Thematic Exhibits',
             icon: BookOpen,
-            description: '瀏覽學生團隊的研究成果，深入了解芝山岩的多元面貌。'
+            description: '隨著我們的腳步，共同進入芝山岩的數位展覽館'
         }
     ];
 
@@ -57,15 +57,17 @@ const Home: React.FC = () => {
                         </span>
                     </div>
                     <h1 className="text-5xl md:text-7xl font-serif font-bold text-ink-black mb-6 tracking-tight">
-                        芝山岩<span className="text-vermilion">時空</span>記憶
+                        巖<span className="text-vermilion">芝</span>有理——
                     </h1>
                     <p className="text-xl md:text-2xl text-ink-black/90 font-serif tracking-widest mb-8 font-bold">
                         ZHISHAN ROCK TIME TRAVELER
                     </p>
+                    {/*
                     <p className="text-ink-black/60 max-w-2xl mx-auto font-serif leading-loose">
                         結合數位孿生與歷史考據，重現台北盆地中最具傳奇色彩的文化地景。
                         在這裡，每一塊石頭都訴說著千萬年的故事。
                     </p>
+                    */}
                 </motion.div>
 
                 {/* Feature Cards */}
