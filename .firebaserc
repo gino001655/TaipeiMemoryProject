@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "taipeitrash-19146"
-  }
+    "default": "taipeitrash-19146",
+    "staging": "newweb-53bef"
+  },
+  "targets": {},
+  "etags": {}
 }

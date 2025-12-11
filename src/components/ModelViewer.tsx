@@ -1,8 +1,11 @@
 import { Suspense, useEffect, useRef, useState, useMemo } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { MapControls, Environment, useGLTF, Html } from '@react-three/drei'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import * as THREE from 'three'
 import { HistoricalSite } from '../types'
+
 
 interface ModelViewerProps {
   selectedSite?: HistoricalSite | null
@@ -142,6 +145,7 @@ function SiteMarker({
 /**
  * 載入單個tile模型
  * 支援調整模型的大小、角度、位置
+ * 支援 Draco 壓縮的模型
  */
 function TileModel({
   url,
@@ -156,7 +160,16 @@ function TileModel({
   rotation?: [number, number, number] // 旋轉角度（弧度）：[x軸, y軸, z軸]
   position?: [number, number, number] // 位置：[x, y, z]
 }) {
-  const { scene } = useGLTF(url)
+  const { scene } = useGLTF(url, true, true, (loader) => {
+    // 配置 Draco 解壓縮器以支援壓縮模型
+    if (loader instanceof GLTFLoader) {
+      const dracoLoader = new DRACOLoader()
+      // 使用 CDN 提供的 Draco 解碼器
+      dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/')
+      dracoLoader.setDecoderConfig({ type: 'js' })
+      loader.setDRACOLoader(dracoLoader)
+    }
+  })
   const groupRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
@@ -208,6 +221,10 @@ function TileModel({
 
   return <group ref={groupRef} />
 }
+
+// 預載入 GLB 模型以提升效能
+useGLTF.preload('/mountain3D_new/mtbigger.glb')
+
 
 /**
  * 山模型的配置參數
