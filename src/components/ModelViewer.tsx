@@ -12,6 +12,7 @@ interface ModelViewerProps {
   width?: string
   height?: string
   showLabels?: boolean // 控制是否顯示標記點名稱
+  showCenterButton?: boolean // 控制是否顯示復位按鈕
 }
 
 /**
@@ -377,7 +378,8 @@ function SceneContent({
   groupRef,
   onSiteClick,
   onViewDetail,
-  showLabels = true
+  showLabels = true,
+  showCenterButton = true
 }: {
   selectedSite?: HistoricalSite | null
   allSites?: HistoricalSite[]
@@ -387,6 +389,7 @@ function SceneContent({
   onSiteClick?: (site: HistoricalSite) => void
   onViewDetail?: (site: HistoricalSite) => void
   showLabels?: boolean
+  showCenterButton?: boolean
 }) {
   const controlsRef = useRef<any>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -462,21 +465,23 @@ function SceneContent({
 
       <Environment preset="sunset" />
 
-      {/* 復位按鈕 */}
-      <Html position={[0, 0, 0]} style={{ pointerEvents: 'none' }} zIndexRange={[100, 0]}>
-        <div style={{ position: 'fixed', bottom: '20px', right: '20px', pointerEvents: 'auto', zIndex: 1000 }}>
-          <button
-            onClick={handleCenterView}
-            className="bg-white text-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group"
-            title="回到中心 / 聚焦景點"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 group-hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11l-3 3m0 0l-3-3m3 3V8" />
-            </svg>
-          </button>
-        </div>
-      </Html>
+      {/* 復位按鈕 - 根據 showCenterButton prop 決定是否顯示 */}
+      {showCenterButton && (
+        <Html position={[0, 0, 0]} style={{ pointerEvents: 'none' }} zIndexRange={[100, 0]}>
+          <div style={{ position: 'fixed', bottom: '20px', right: '20px', pointerEvents: 'auto', zIndex: 1000 }}>
+            <button
+              onClick={handleCenterView}
+              className="bg-white text-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group"
+              title="回到中心 / 聚焦景點"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-600 group-hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11l-3 3m0 0l-3-3m3 3V8" />
+              </svg>
+            </button>
+          </div>
+        </Html>
+      )}
     </>
   )
 }
@@ -486,7 +491,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   allSites = [],
   onSiteClick,
   onViewDetail,
-  showLabels = true
+  showLabels = true,
+  showCenterButton = true
 }) => {
   const groupRef = useRef<THREE.Group>(null)
   const [modelsReady, setModelsReady] = useState(false)
@@ -523,6 +529,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
           onSiteClick={onSiteClick}
           onViewDetail={onViewDetail}
           showLabels={showLabels}
+          showCenterButton={showCenterButton}
         />
       </Canvas>
     </div>

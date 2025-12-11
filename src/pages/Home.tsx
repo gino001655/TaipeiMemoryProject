@@ -37,6 +37,7 @@ const Home: React.FC = () => {
                 <ModelViewer
                     allSites={historicalSites}
                     showLabels={false}
+                    showCenterButton={false}
                 />
                 {/* Vintage Overlay Texture */}
                 <div className="absolute inset-0 bg-paper-texture opacity-30 pointer-events-none mix-blend-multiply" />
@@ -57,7 +58,7 @@ const Home: React.FC = () => {
                         </span>
                     </div>
                     <h1 className="text-5xl md:text-7xl font-serif font-bold text-ink-black mb-6 tracking-tight">
-                        巖<span className="text-vermilion">芝</span>有理——
+                        巖<span className="text-vermilion">芝</span>有理—
                     </h1>
                     <p className="text-xl md:text-2xl text-ink-black/90 font-serif tracking-widest mb-8 font-bold">
                         ZHISHAN ROCK TIME TRAVELER
