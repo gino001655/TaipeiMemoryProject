@@ -7,16 +7,16 @@ const slides = [
     {
         id: 1,
         image: '/images/colonial_incident.png',
-        description: '1896年「芝山岩事件」爆發，六位日籍教師遇害。這場血腥衝突，將平靜山丘捲入殖民統治的政治風暴。'
+        description: '1896年「芝山巖事件」爆發，六位日籍教師遇害。這場血腥衝突，將平靜山丘捲入殖民統治的政治風暴。'
     },
     {
         id: 2,
         image: '/images/colonial_shrine.png',
-        description: '官方將死亡昇華為神聖的「殉難」。芝山岩被改造為全臺最高規格的教育聖地，這是一場精密計算的記憶工程。'
+        description: '官方將死亡昇華為神聖的「殉難」。芝山巖被改造為全臺最高規格的教育聖地，這是一場精密計算的記憶工程。'
     },
     {
         id: 3,
-        image: '/images/colonial_path.png',
+        image: '/images/ZSanshrine.png',
         description: '建立神社、修築參道，這裡是皇民化教育的核心。透過空間儀式，殖民者將「忠君愛國」刻入每一位參拜者的心中。'
     }
 ];

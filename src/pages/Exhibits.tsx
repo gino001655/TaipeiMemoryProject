@@ -581,7 +581,7 @@ const ExhibitsHome: React.FC = () => {
                 {/* 描述文字 */}
                 <div className="max-w-2xl mx-auto mb-16">
                     <p className="text-lg md:text-xl text-ink-black/60 font-serif leading-loose mb-6">
-                        瀏覽學生團隊的研究成果，深入了解芝山岩的多元面貌。
+                        瀏覽我們的研究成果，深入了解芝山岩的多元面貌。
                     </p>
                     <p className="text-base md:text-lg text-ink-black/50 font-serif leading-relaxed">
                         每一段歷史都有不同的詮釋角度，每一個故事都值得被聽見。

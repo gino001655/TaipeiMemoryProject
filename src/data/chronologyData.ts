@@ -31,7 +31,7 @@ export const chronologyEvents: ChronologyEvent[] = [
         ],
         images: [
             { url: 'https://data.boch.gov.tw/upload/representImageFile/2025-06-02/106a55c3-729d-4461-9ac6-2941ec7699a0/%E8%8A%9D%E5%B1%B1%E5%B2%A9%E7%85%A7%E7%89%87.jpeg', caption: '芝山岩' },
-            { url: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghv95zVMk40_OsBlmdbwu7a4_pi1kD9RpjAjc3NckEk_ESx17GKZrDn8nhJsUpphM9uWOkhkD7Pv2xwvpFGRu1-Dm6RmTIUfF1azSdUF5ImI4p1WiJZDRLBEeGtM2-iIaYajWj0wAk5GG7/s1600/05.jpg', caption: '芝山岩地景' },
+            { url: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghv95zVMk40_OsBlmdbwu7a4_pi1kD9RpjAjc3NckEk_ESx17GKZrDn8nhJsUpphM9uWOkhkD7Pv2xwvpFGRu1-Dm6RmTIUfF1azSdUF5ImI4p1WiJZDRLBEeGtM2-iIaYajWj0wAk5GG7/s1600/05.jpg', caption: '芝山探坑展示館' },
             { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/tpk_life.jpg', caption: '大坌坑文化' },
             { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/csy_life.jpg', caption: '芝山岩文化' },
             { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/ys_life.jpg', caption: '圓山文化' },
@@ -67,7 +67,7 @@ export const chronologyEvents: ChronologyEvent[] = [
             '芝山岩作為地方社群的信仰中心，具體祭祀的對象，從傳統共同信仰的觀音佛祖，到移民原鄉的開漳聖王，再到祭祀林爽文事件中的罹難者、械鬥中死於自衛的漳州人，以及「來犯」的泉州人，可以看出其祭祀的精神轉變，朝向在地化、事件導向，以及從共同神、地方神、自己人到外人的擴大、包容趨勢。'
         ],
         images: [
-            { url: 'https://tm.ncl.edu.tw/TM_DO/005/pc-tp-b176-n_watered_watered_72dpi.jpg', caption: '林爽文事變' },
+            { url: 'https://tm.ncl.edu.tw/TM_DO/005/pc-tp-b176-n_watered_watered_72dpi.jpg', caption: '同歸所舊貌' },
             { url: 'https://upload.wikimedia.org/wikipedia/commons/1/14/%E8%8A%9D%E5%B1%B1%E5%B2%A9%E5%90%8C%E6%AD%B8%E6%89%80.jpg', caption: '同歸所' }
         ]
     },
@@ -83,8 +83,8 @@ export const chronologyEvents: ChronologyEvent[] = [
             '關鍵者在於合約中，明確約束後世子孫「至于黃承帶等前此所領憲示案由，實出不知並非故意；今既查確仍施，日後不敢藉此為據再滋事端」。語氣雖然客套，卻明確法律地位與官方態度，縱使黃家曾持有官方批示文件，此後亦不可再重新主張地權。'
         ],
         images: [
-            { url: 'https://dl.lib.ntu.edu.tw/files/original/853209/ntul-mr-rt00087.jpg', caption: '芝山合約碑記' },
-            { url: 'https://parks.gov.taipei/upload/m2s1/thumb_image_1733654.jpg', caption: '碑記拓片' },
+            { url: 'https://dl.lib.ntu.edu.tw/files/original/853209/ntul-mr-rt00087.jpg', caption: '碑記拓片' },
+            { url: 'https://parks.gov.taipei/upload/m2s1/thumb_image_1733654.jpg', caption: '芝山合約碑記' },
             { url: 'http://country.slps.tp.edu.tw/b/06/s7-1-8.files/k042.jpg', caption: '懷古園' }
         ]
     },
