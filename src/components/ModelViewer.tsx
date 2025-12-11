@@ -11,6 +11,7 @@ interface ModelViewerProps {
   onViewDetail?: (site: HistoricalSite) => void
   width?: string
   height?: string
+  showLabels?: boolean // 控制是否顯示標記點名稱
 }
 
 /**
@@ -55,13 +56,15 @@ function SiteMarker({
   selected,
   site,
   onClick,
-  onViewDetail
+  onViewDetail,
+  showLabel = true
 }: {
   position: THREE.Vector3
   selected: boolean
   site: HistoricalSite
   onClick?: (site: HistoricalSite) => void
   onViewDetail?: (site: HistoricalSite) => void
+  showLabel?: boolean
 }) {
   const markerRef = useRef<THREE.Group>(null)
   const [hovered, setHovered] = useState(false)
@@ -111,24 +114,26 @@ function SiteMarker({
           emissiveIntensity={selected ? 0.5 : 0.2}
         />
       </mesh>
-      <Html position={[0, 3, 0]} center style={{ pointerEvents: 'none', userSelect: 'none', zIndex: selected ? 10 : 1 }}>
-        <div className="flex flex-col items-center gap-1">
-          <div className={`px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap transition-all ${selected ? 'bg-red-600' : 'bg-gray-800 bg-opacity-70'}`}>
-            {site.name}
+      {showLabel && (
+        <Html position={[0, 3, 0]} center style={{ pointerEvents: 'none', userSelect: 'none', zIndex: selected ? 10 : 1 }}>
+          <div className="flex flex-col items-center gap-1">
+            <div className={`px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap transition-all ${selected ? 'bg-red-600' : 'bg-gray-800 bg-opacity-70'}`}>
+              {site.name}
+            </div>
+            {selected && onViewDetail && (
+              <button
+                className="mt-1 px-3 py-1 bg-white text-gray-900 text-xs rounded shadow-lg hover:bg-gray-100 pointer-events-auto transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onViewDetail(site)
+                }}
+              >
+                查看詳情
+              </button>
+            )}
           </div>
-          {selected && onViewDetail && (
-            <button
-              className="mt-1 px-3 py-1 bg-white text-gray-900 text-xs rounded shadow-lg hover:bg-gray-100 pointer-events-auto transition-colors"
-              onClick={(e) => {
-                e.stopPropagation()
-                onViewDetail(site)
-              }}
-            >
-              查看詳情
-            </button>
-          )}
-        </div>
-      </Html>
+        </Html>
+      )}
     </group>
   )
 }
@@ -371,7 +376,8 @@ function SceneContent({
   setModelsReady,
   groupRef,
   onSiteClick,
-  onViewDetail
+  onViewDetail,
+  showLabels = true
 }: {
   selectedSite?: HistoricalSite | null
   allSites?: HistoricalSite[]
@@ -380,6 +386,7 @@ function SceneContent({
   groupRef: React.RefObject<THREE.Group>
   onSiteClick?: (site: HistoricalSite) => void
   onViewDetail?: (site: HistoricalSite) => void
+  showLabels?: boolean
 }) {
   const controlsRef = useRef<any>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -424,6 +431,7 @@ function SceneContent({
             site={site}
             onClick={onSiteClick}
             onViewDetail={onViewDetail}
+            showLabel={showLabels}
           />
         )
       })}
@@ -477,7 +485,8 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
   selectedSite,
   allSites = [],
   onSiteClick,
-  onViewDetail
+  onViewDetail,
+  showLabels = true
 }) => {
   const groupRef = useRef<THREE.Group>(null)
   const [modelsReady, setModelsReady] = useState(false)
@@ -513,6 +522,7 @@ const ModelViewer: React.FC<ModelViewerProps> = ({
           groupRef={groupRef}
           onSiteClick={onSiteClick}
           onViewDetail={onViewDetail}
+          showLabels={showLabels}
         />
       </Canvas>
     </div>

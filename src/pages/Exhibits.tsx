@@ -547,19 +547,111 @@ const CTASection: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     );
 };
 
+// 首頁區塊 - 簡潔風格
+const ExhibitsHome: React.FC = () => {
+    return (
+        <div className="relative w-full min-h-screen bg-vintage-paper flex items-center justify-center px-6 md:px-12 py-20">
+            {/* 背景裝飾 */}
+            <div className="absolute inset-0 opacity-5">
+                <div className="absolute inset-0 bg-grid-pattern" />
+            </div>
+
+            {/* 主內容 */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="relative z-10 max-w-4xl mx-auto text-center"
+            >
+                {/* 標題區塊 */}
+                <div className="mb-8 inline-block">
+                    <span className="px-4 py-1 border-y-2 border-ink-black text-ink-black font-serif tracking-[0.2em] text-sm uppercase">
+                        Thematic Exhibition
+                    </span>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-serif font-bold text-ink-black mb-6 tracking-tight leading-tight">
+                    專題<span className="text-vermilion">展間</span>
+                </h1>
+
+                <p className="text-xl md:text-2xl text-ink-black/70 font-serif tracking-widest mb-12">
+                    THEMATIC EXHIBITS
+                </p>
+
+                {/* 描述文字 */}
+                <div className="max-w-2xl mx-auto mb-16">
+                    <p className="text-lg md:text-xl text-ink-black/60 font-serif leading-loose mb-6">
+                        瀏覽學生團隊的研究成果，深入了解芝山岩的多元面貌。
+                    </p>
+                    <p className="text-base md:text-lg text-ink-black/50 font-serif leading-relaxed">
+                        每一段歷史都有不同的詮釋角度，每一個故事都值得被聽見。
+                    </p>
+                </div>
+
+                {/* 裝飾線 */}
+                <div className="flex items-center justify-center gap-4 mb-12">
+                    <div className="h-px w-20 bg-sepia-500/30" />
+                    <div className="w-2 h-2 bg-vermilion rounded-full" />
+                    <div className="h-px w-20 bg-sepia-500/30" />
+                </div>
+
+                {/* 提示文字 */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="text-sm text-sepia-500 font-serif tracking-widest uppercase"
+                >
+                    向下滾動開始探索
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+};
+
 // Main Component
 const Exhibits: React.FC = () => {
     const navigate = useNavigate();
     const [showAd, setShowAd] = useState(false);
+    const [countdown, setCountdown] = useState(5);
+    const [canClose, setCanClose] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
+    // 倒數計時邏輯
+    useEffect(() => {
+        if (showAd && !canClose) {
+            const timer = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev <= 1) {
+                        setCanClose(true);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [showAd, canClose]);
+
     const handleAdClose = () => {
-        setShowAd(false);
-        navigate('/history-corridor');
+        if (canClose) {
+            setShowAd(false);
+            setCanClose(false);
+            setCountdown(5);
+            navigate('/history-corridor');
+        }
     };
+
+    // 當廣告顯示時重置倒數
+    useEffect(() => {
+        if (showAd) {
+            setCountdown(5);
+            setCanClose(false);
+        }
+    }, [showAd]);
 
     const renderSection = (section: StorySection) => {
         switch (section.type) {
@@ -580,6 +672,10 @@ const Exhibits: React.FC = () => {
 
     return (
         <div className="w-full bg-vintage-paper">
+            {/* 首頁區塊 */}
+            <ExhibitsHome />
+            
+            {/* 原有內容 */}
             {sections.map(renderSection)}
 
             {/* Ad Modal */}
@@ -591,8 +687,8 @@ const Exhibits: React.FC = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={handleAdClose}
-                            className="absolute inset-0 bg-ink-black/60 backdrop-blur-sm"
+                            onClick={canClose ? handleAdClose : undefined}
+                            className={`absolute inset-0 bg-ink-black/60 backdrop-blur-sm ${canClose ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                         />
 
                         {/* Modal Card */}
@@ -602,12 +698,24 @@ const Exhibits: React.FC = () => {
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             className="relative w-full max-w-lg bg-white rounded-xl shadow-2xl overflow-hidden z-10 border-4 border-gray-200"
                         >
-                            {/* Close Button */}
+                            {/* Close Button with Countdown */}
                             <button
                                 onClick={handleAdClose}
-                                className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-full transition-colors z-20"
+                                disabled={!canClose}
+                                className={`absolute top-4 right-4 p-2 rounded-full transition-all z-20 ${
+                                    canClose 
+                                        ? 'bg-black/50 hover:bg-black/70 cursor-pointer' 
+                                        : 'bg-black/70 cursor-not-allowed opacity-60'
+                                }`}
+                                title={canClose ? '關閉' : `請等待 ${countdown} 秒`}
                             >
-                                <X className="w-6 h-6 text-white" />
+                                {canClose ? (
+                                    <X className="w-6 h-6 text-white" />
+                                ) : (
+                                    <span className="text-white text-sm font-bold w-6 h-6 flex items-center justify-center">
+                                        {countdown}
+                                    </span>
+                                )}
                             </button>
 
                             {/* Image Section */}

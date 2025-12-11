@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import DualModelViewer from '../components/DualModelViewer';
 
 const periods = [
     {
@@ -24,7 +25,8 @@ const periods = [
     {
         title: '戰後',
         image: '/images/post_war_era.png',
-        description: '回歸平靜，轉型為史蹟公園，成為市民親近自然與歷史的場域。'
+        description: '回歸平靜，轉型為史蹟公園，成為市民親近自然與歷史的場域。',
+        link: '/history/post-war'
     }
 ];
 
@@ -99,13 +101,24 @@ const HistoryCorridor: React.FC = () => {
                     })}
                 </div>
 
+                {/* 3D Models Section - 在引文上方 */}
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 1, delay: 0.1 }}
+                    className="mt-32 mb-16 px-6 md:px-12"
+                >
+                    <DualModelViewer />
+                </motion.div>
+
                 {/* Quote Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 1, delay: 0.2 }}
-                    className="mt-32 mb-16 px-6 md:px-12 text-center"
+                    className="mt-16 mb-16 px-6 md:px-12 text-center"
                 >
                     <div className="relative inline-block">
                         <span className="absolute -top-6 -left-4 text-6xl text-sepia-500/20 font-serif">“</span>
@@ -118,6 +131,7 @@ const HistoryCorridor: React.FC = () => {
                         —— 宋宜晶《雅量》
                     </cite>
                 </motion.div>
+
             </div>
         </div>
     );

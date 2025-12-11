@@ -24,12 +24,15 @@ const slides = [
 const QingDynasty: React.FC = () => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState<'left' | 'right'>('right');
 
     const nextSlide = () => {
+        setDirection('right');
         setCurrentIndex((prev) => (prev + 1) % slides.length);
     };
 
     const prevSlide = () => {
+        setDirection('left');
         setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
@@ -57,19 +60,21 @@ const QingDynasty: React.FC = () => {
                 <AnimatePresence initial={false} mode="wait">
                     <motion.div
                         key={currentIndex}
-                        initial={{ opacity: 0, x: 100 }}
+                        initial={{ opacity: 0, x: direction === 'right' ? 100 : -100 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -100 }}
+                        exit={{ opacity: 0, x: direction === 'right' ? -100 : 100 }}
                         transition={{ duration: 0.5, ease: "easeInOut" }}
                         className="absolute inset-0 flex flex-col"
                     >
                         {/* Image Area */}
-                        <div className="flex-1 w-full relative overflow-hidden group">
+                        <div className="flex-1 w-full relative overflow-hidden group bg-ink-black">
                             <div
-                                className="w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105"
+                                className="w-full h-full bg-contain bg-center bg-no-repeat"
                                 style={{
                                     backgroundImage: `url(${slides[currentIndex].image})`,
-                                    backgroundSize: 'cover'
+                                    backgroundSize: 'contain',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center'
                                 }}
                             />
                             {/* 漸層遮罩 */}
@@ -77,11 +82,11 @@ const QingDynasty: React.FC = () => {
                         </div>
 
                         {/* Content Area */}
-                        <div className="w-full bg-vintage-paper px-6 py-6 md:py-10 border-t-4 border-vermilion">
-                            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="w-full bg-vintage-paper px-4 md:px-6 py-6 md:py-10 border-t-4 border-vermilion">
+                            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
                                 {/* Centered Description */}
                                 <div className="flex-1 text-center order-2 md:order-1">
-                                    <p className="text-xl md:text-2xl text-ink-black font-serif font-medium leading-relaxed tracking-wide">
+                                    <p className="text-base md:text-xl lg:text-2xl text-ink-black font-serif font-medium leading-relaxed tracking-wide px-2">
                                         {slides[currentIndex].description}
                                     </p>
                                 </div>
@@ -90,10 +95,10 @@ const QingDynasty: React.FC = () => {
                                 <div className="order-3 md:order-2 shrink-0">
                                     <button
                                         onClick={handleReadMore}
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
+                                        className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-ink-black text-vintage-paper rounded-full text-sm md:text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
                                     >
                                         <span>點我查看更多</span>
-                                        <ArrowRight className="w-5 h-5" />
+                                        <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                     </button>
                                 </div>
                             </div>

@@ -24,12 +24,15 @@ const slides = [
 const Prehistoric: React.FC = () => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState<'left' | 'right'>('right');
 
     const nextSlide = () => {
+        setDirection('right');
         setCurrentIndex((prev) => (prev + 1) % slides.length);
     };
 
     const prevSlide = () => {
+        setDirection('left');
         setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
     };
 
@@ -42,37 +45,32 @@ const Prehistoric: React.FC = () => {
         <div className="w-full h-screen bg-vintage-paper overflow-hidden relative flex flex-col pt-16 md:pt-20">
             {/* Slider Container */}
             <div className="flex-1 relative w-full h-full flex flex-col">
-                {/* Image Area - Persistent Background with Smooth Panning (GPU Accelerated) */}
-                <div className="flex-1 w-full relative overflow-hidden bg-black">
+                {/* Image Area - 響應式設計 */}
+                <AnimatePresence initial={false} mode="wait">
                     <motion.div
-                        className="h-full bg-cover bg-no-repeat absolute top-0 left-0"
-                        style={{
-                            width: '180%', // Zoom in to allow panning
-                            backgroundImage: `url(${slides[0].image})`,
-                            backgroundPosition: 'center center' // Align image within the zoomed container
-                        }}
-                        initial={false}
-                        animate={{
-                            // Panning logic:
-                            // 0: Left side (x: 0)
-                            // 1: Center (x: -22% approx, centering the 180% width container relative to 100% viewport)
-                            // 2: Right side (x: -44%, showing the right end)
-                            // Calculation: Total width 180%. Viewport 100%. Hidden overflow 80%.
-                            // Range: 0% to -80% (relative to viewport) or 0% to -44.4% (relative to container width)
-                            // Let's use % relative to element width for 'x' in Framer Motion usually.
-                            x: currentIndex === 0 ? '0%' :
-                                currentIndex === 1 ? '-22%' :
-                                    '-44%'
-                        }}
-                        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }} // Ultra smooth "spring-like" easing
-                    />
-
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-vintage-paper to-transparent z-10" />
-                </div>
+                        key={currentIndex}
+                        initial={{ opacity: 0, x: direction === 'right' ? 100 : -100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: direction === 'right' ? -100 : 100 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        className="flex-1 w-full relative overflow-hidden bg-ink-black"
+                    >
+                        <div
+                            className="w-full h-full bg-contain bg-center bg-no-repeat"
+                            style={{
+                                backgroundImage: `url(${slides[currentIndex].image})`,
+                                backgroundSize: 'contain',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center'
+                            }}
+                        />
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-vintage-paper to-transparent z-10" />
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Content Area */}
-                <div className="w-full bg-vintage-paper px-6 py-6 md:py-10 border-t-4 border-vermilion relative z-10">
+                <div className="w-full bg-vintage-paper px-4 md:px-6 py-6 md:py-10 border-t-4 border-vermilion relative z-10">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentIndex}
@@ -80,11 +78,11 @@ const Prehistoric: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.5 }}
-                            className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
+                            className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6"
                         >
                             {/* Centered Description */}
                             <div className="flex-1 text-center order-2 md:order-1">
-                                <p className="text-xl md:text-2xl text-ink-black font-serif font-medium leading-relaxed tracking-wide">
+                                <p className="text-base md:text-xl lg:text-2xl text-ink-black font-serif font-medium leading-relaxed tracking-wide px-2">
                                     {slides[currentIndex].description}
                                 </p>
                             </div>
@@ -93,10 +91,10 @@ const Prehistoric: React.FC = () => {
                             <div className="order-3 md:order-2 shrink-0">
                                 <button
                                     onClick={handleReadMore}
-                                    className="inline-flex items-center gap-2 px-6 py-3 bg-ink-black text-vintage-paper rounded-full text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
+                                    className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-ink-black text-vintage-paper rounded-full text-sm md:text-lg font-serif hover:bg-vermilion transition-all duration-300 shadow-md"
                                 >
                                     <span>點我查看更多</span>
-                                    <ArrowRight className="w-5 h-5" />
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                 </button>
                             </div>
                         </motion.div>

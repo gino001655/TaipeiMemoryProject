@@ -36,6 +36,7 @@ const Home: React.FC = () => {
             <div className="fixed inset-0 z-0 opacity-60">
                 <ModelViewer
                     allSites={historicalSites}
+                    showLabels={false}
                 />
                 {/* Vintage Overlay Texture */}
                 <div className="absolute inset-0 bg-paper-texture opacity-30 pointer-events-none mix-blend-multiply" />
@@ -58,7 +59,7 @@ const Home: React.FC = () => {
                     <h1 className="text-5xl md:text-7xl font-serif font-bold text-ink-black mb-6 tracking-tight">
                         芝山岩<span className="text-vermilion">時空</span>記憶
                     </h1>
-                    <p className="text-xl md:text-2xl text-ink-black/70 font-serif tracking-widest mb-8">
+                    <p className="text-xl md:text-2xl text-ink-black/90 font-serif tracking-widest mb-8 font-bold">
                         ZHISHAN ROCK TIME TRAVELER
                     </p>
                     <p className="text-ink-black/60 max-w-2xl mx-auto font-serif leading-loose">

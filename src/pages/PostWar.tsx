@@ -6,22 +6,27 @@ import { useNavigate } from 'react-router-dom';
 const slides = [
     {
         id: 1,
-        image: '/images/colonial_incident.png',
-        description: '1896年「芝山岩事件」爆發，六位日籍教師遇害。這場血腥衝突，將平靜山丘捲入殖民統治的政治風暴。'
+        image: '/images/post_war_era.png',
+        description: '1945年8月15日昭和天皇的玉音放送傳遍台灣的大街小巷，宣告又一個政權在台灣統治的終結，10月25日中華民國正式接收台灣，帶來了全新的國族認同和象徵符號，芝山巖的故事也從此有了全新的敘事視角。'
     },
     {
         id: 2,
-        image: '/images/colonial_shrine.png',
-        description: '官方將死亡昇華為神聖的「殉難」。芝山岩被改造為全臺最高規格的教育聖地，這是一場精密計算的記憶工程。'
+        image: '/images/post_war_era.png',
+        description: '1958年冬，國民政府在芝山巖新設立了芝山岩事件碑記，碑文的主角不再是六氏先生和其他亡教育者，而是當時殺害六氏先生的抗日民眾。碑文中，原先冥頑不靈的土匪，搖身一變成了凜於春秋之義、不甘受日本同化的義民，表彰的對象也從被害者（六氏先生）轉變為加害者（抗日民眾）。'
     },
     {
         id: 3,
-        image: '/images/colonial_path.png',
-        description: '建立神社、修築參道，這裡是皇民化教育的核心。透過空間儀式，殖民者將「忠君愛國」刻入每一位參拜者的心中。'
+        image: '/images/post_war_era.png',
+        description: '民國四十年前後，芝山巖一帶被徵收為學校、機關用地，並大部分為情報局與軍方所用，也促使芝山巖社區出現「由邊陲轉為核心」的趨勢。隨著機關遷入的人員與眷屬也陸續落腳此地，在此自立造屋並形成聚落。'
+    },
+    {
+        id: 4,
+        image: '/images/post_war_era.png',
+        description: '今日的芝山岩轉型為史蹟公園，成為市民親近自然與歷史的場域，見證不同時代如何詮釋同一段歷史。芝山巖事件發生至今歷經多種不同的敘事轉換，從六氏先生的殉教殉國到義民抗日，芝山巖成為一座載負多重記憶的空間。'
     }
 ];
 
-const JapaneseColonial: React.FC = () => {
+const PostWar: React.FC = () => {
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState<'left' | 'right'>('right');
@@ -38,13 +43,13 @@ const JapaneseColonial: React.FC = () => {
 
     const handleReadMore = () => {
         const currentSlide = slides[currentIndex];
-        // 第一張卡片 (芝山岩事件) 連到 1895-1896
+        // 根據不同的slide跳轉到不同的時空軌跡事件
         if (currentSlide.id === 1) {
-            navigate('/chronology', { state: { activeId: 'japanese-incident' } });
-        }
-        // 第二、三張卡片 (神社、參道) 都連到 1896-1930
-        else if (currentSlide.id === 2 || currentSlide.id === 3) {
-            navigate('/chronology', { state: { activeId: 'japanese-shrine' } });
+            navigate('/chronology', { state: { activeId: 'roc-reinterpretation' } });
+        } else if (currentSlide.id === 2) {
+            navigate('/chronology', { state: { activeId: 'roc-reinterpretation' } });
+        } else {
+            navigate('/chronology', { state: { activeId: 'roc-reinterpretation' } });
         }
     };
 
@@ -133,4 +138,5 @@ const JapaneseColonial: React.FC = () => {
     );
 };
 
-export default JapaneseColonial;
+export default PostWar;
+

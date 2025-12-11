@@ -18,25 +18,25 @@ const Chronology: React.FC = () => {
     const activeEvent = chronologyEvents.find(e => e.id === activeEventId) || chronologyEvents[0];
 
     return (
-        <div className="w-full min-h-screen bg-vintage-paper pt-20 pb-10 px-4 md:px-10 overflow-y-auto">
+        <div className="w-full min-h-screen bg-vintage-paper pt-20 md:pt-24 pb-10 px-4 md:px-6 lg:px-10 overflow-y-auto">
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="max-w-6xl mx-auto"
             >
                 {/* Header */}
-                <header className="mb-12 text-center">
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-ink-black mb-4">
+                <header className="mb-8 md:mb-12 text-center">
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-ink-black mb-2 md:mb-4">
                         時空軌跡
                     </h1>
-                    <p className="text-sepia-500 font-serif tracking-widest">
+                    <p className="text-sm md:text-base text-sepia-500 font-serif tracking-widest">
                         CHRONOLOGY OF ZHISHAN
                     </p>
                 </header>
 
                 {/* Timeline Axis */}
-                <div className="mb-16 overflow-x-auto pb-4">
-                    <div className="flex items-center gap-4 md:gap-8 relative min-w-max px-4">
+                <div className="mb-16 overflow-x-auto overflow-y-visible pb-4">
+                    <div className="flex items-center gap-4 md:gap-8 relative min-w-max px-4" style={{ height: 'auto', minHeight: '120px' }}>
                         {/* Connecting Line */}
                         <div className="absolute top-1/2 left-8 right-8 h-[2px] bg-gradient-to-r from-sepia-500/30 via-vermilion/50 to-sepia-500/30 -z-10" />
 
@@ -44,11 +44,12 @@ const Chronology: React.FC = () => {
                             <button
                                 key={event.id}
                                 onClick={() => setActiveEventId(event.id)}
-                                className={`relative flex flex-col items-center gap-2 group min-w-[120px] transition-all duration-300 ${activeEventId === event.id ? 'scale-110' : 'opacity-60 hover:opacity-100'
+                                className={`relative flex flex-col items-center gap-2 group min-w-[100px] md:min-w-[120px] transition-all duration-300 ${activeEventId === event.id ? 'scale-110' : 'opacity-60 hover:opacity-100'
                                     }`}
+                                style={{ height: 'auto' }}
                             >
                                 {/* Timeline Node */}
-                                <div className={`w-5 h-5 rounded-full border-2 transition-all duration-300 ${activeEventId === event.id
+                                <div className={`w-5 h-5 rounded-full border-2 transition-all duration-300 flex-shrink-0 ${activeEventId === event.id
                                     ? 'bg-vermilion border-vermilion shadow-lg shadow-vermilion/50'
                                     : 'bg-vintage-paper border-sepia-500 group-hover:border-vermilion group-hover:scale-110'
                                     }`}>
@@ -63,13 +64,13 @@ const Chronology: React.FC = () => {
                                 </div>
 
                                 {/* Year Label */}
-                                <span className={`font-serif text-xs md:text-sm whitespace-nowrap transition-all duration-300 ${activeEventId === event.id ? 'text-vermilion font-bold' : 'text-ink-black'
+                                <span className={`font-serif text-xs md:text-sm whitespace-nowrap transition-all duration-300 text-center ${activeEventId === event.id ? 'text-vermilion font-bold' : 'text-ink-black'
                                     }`}>
                                     {event.year}
                                 </span>
 
-                                {/* Era Label (visible on hover or when active) */}
-                                <span className={`font-serif text-xs text-sepia-500 whitespace-nowrap transition-opacity duration-300 ${activeEventId === event.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                {/* Era Label (always visible, but smaller when not active) */}
+                                <span className={`font-serif text-xs text-sepia-500 whitespace-nowrap transition-all duration-300 text-center ${activeEventId === event.id ? 'opacity-100' : 'opacity-70'
                                     }`}>
                                     {event.era}
                                 </span>
@@ -109,7 +110,7 @@ const Chronology: React.FC = () => {
                                             className="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                                             onError={(e) => {
                                                 const target = e.target as HTMLImageElement;
-                                                target.src = '/images/placeholder.jpg';
+                                                target.style.display = 'none';
                                             }}
                                         />
                                         {image.caption && (
@@ -197,7 +198,7 @@ const Chronology: React.FC = () => {
                                                 className="w-full h-auto rounded-sm border-4 border-white/50 shadow-xl"
                                                 onError={(e) => {
                                                     const target = e.target as HTMLImageElement;
-                                                    target.src = '/images/placeholder.jpg';
+                                                    target.style.display = 'none';
                                                 }}
                                             />
                                             {image.caption && (

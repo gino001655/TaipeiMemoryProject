@@ -76,13 +76,10 @@ const SiteDetail: React.FC = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="mt-12 pt-6 border-t border-sepia-500/20 flex justify-between items-center">
+                    <div className="mt-12 pt-6 border-t border-sepia-500/20">
                         <span className="text-sepia-500 text-sm font-serif italic">
-                            資料來源：芝山岩文史工作室<br />    
+                            資料來源：芝山岩文史工作室
                         </span>
-                        <button className="ink-button rounded-sm text-sm">
-                            分享此地點
-                        </button>
                     </div>
                 </div>
             </motion.div>

@@ -56,3 +56,5 @@ const ConfiguredImage: React.FC<ConfiguredImageProps> = ({
 
 export default ConfiguredImage;
 
+
+

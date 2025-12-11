@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, Clock, BookOpen, Menu, X, Github, Cloud, Scroll } from 'lucide-react';
+import { Map, Clock, BookOpen, Menu, X, Github, Cloud, Scroll, Link as LinkIcon } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
     const location = useLocation();
@@ -56,10 +56,10 @@ const MainLayout: React.FC = () => {
                     </div>
                     <div className="flex flex-col">
                         <span className="text-xl font-display font-bold text-ink-black tracking-widest group-hover:text-vermilion transition-colors">
-                            芝山時空旅人
+                            芝麻開門
                         </span>
                         <span className="text-xs font-serif text-sepia-500 tracking-[0.2em] uppercase">
-                            Zhishan Time Traveler
+                            Zhimakaimen
                         </span>
                     </div>
                 </Link>
@@ -91,6 +91,14 @@ const MainLayout: React.FC = () => {
 
                     {/* External Links */}
                     <div className="flex items-center gap-4 ml-4 pl-4 border-l border-sepia-500/20">
+                        <Link
+                            to="/references"
+                            className={`p-2 transition-colors duration-300 group ${location.pathname === '/references' ? 'text-vermilion' : 'text-ink-black hover:text-vermilion'}`}
+                            title="參考連結 / References"
+                            aria-label="參考連結"
+                        >
+                            <LinkIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        </Link>
                         <a
                             href="https://github.com/gino001655/TaipeiMemoryProject"
                             target="_blank"
@@ -116,6 +124,14 @@ const MainLayout: React.FC = () => {
 
                 {/* Mobile: External Links + Menu Button */}
                 <div className="md:hidden flex items-center gap-3">
+                    <Link
+                        to="/references"
+                        className={`p-2 transition-colors ${location.pathname === '/references' ? 'text-vermilion' : 'text-ink-black hover:text-vermilion'}`}
+                        title="參考連結"
+                        aria-label="參考連結"
+                    >
+                        <LinkIcon className="w-5 h-5" />
+                    </Link>
                     <a
                         href="https://github.com/gino001655/TaipeiMemoryProject"
                         target="_blank"
@@ -180,7 +196,15 @@ const MainLayout: React.FC = () => {
                             ))}
 
                             {/* Mobile External Links */}
-                            <div className="pt-4 mt-4 border-t border-sepia-500/20 flex gap-4 justify-center">
+                            <div className="pt-4 mt-4 border-t border-sepia-500/20 flex flex-col gap-2">
+                                <Link
+                                    to="/references"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className={`flex items-center gap-2 p-3 rounded-lg transition-colors ${location.pathname === '/references' ? 'bg-sepia-500/10 text-vermilion' : 'text-ink-black hover:bg-black/5'}`}
+                                >
+                                    <LinkIcon className="w-5 h-5" />
+                                    <span className="font-serif text-lg">參考連結</span>
+                                </Link>
                                 <a
                                     href="https://github.com/gino001655/TaipeiMemoryProject"
                                     target="_blank"
