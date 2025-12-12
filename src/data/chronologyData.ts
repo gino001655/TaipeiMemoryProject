@@ -32,10 +32,10 @@ export const chronologyEvents: ChronologyEvent[] = [
         images: [
             { url: 'https://data.boch.gov.tw/upload/representImageFile/2025-06-02/106a55c3-729d-4461-9ac6-2941ec7699a0/%E8%8A%9D%E5%B1%B1%E5%B2%A9%E7%85%A7%E7%89%87.jpeg', caption: '芝山岩' },
             { url: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghv95zVMk40_OsBlmdbwu7a4_pi1kD9RpjAjc3NckEk_ESx17GKZrDn8nhJsUpphM9uWOkhkD7Pv2xwvpFGRu1-Dm6RmTIUfF1azSdUF5ImI4p1WiJZDRLBEeGtM2-iIaYajWj0wAk5GG7/s1600/05.jpg', caption: '芝山探坑展示館' },
-            { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/tpk_life.jpg', caption: '大坌坑文化' },
-            { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/csy_life.jpg', caption: '芝山岩文化' },
-            { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/ys_life.jpg', caption: '圓山文化' },
-            { url: 'http://ci6.lib.ntu.edu.tw/tamsui/subject/subject-2/img/cwy_life.gif', caption: '植物園文化' }
+            { url: '/images/tpk_life.jpg', caption: '大坌坑文化' },
+            { url: '/images/csy_life.jpg', caption: '芝山岩文化' },
+            { url: '/images/ys_life.jpg', caption: '圓山文化' },
+            { url: '/images/cwy_life.gif', caption: '植物園文化' }
         ]
     },
     {
