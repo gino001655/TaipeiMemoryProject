@@ -209,13 +209,7 @@ function TileModel({
       if (groupRef.current) {
         groupRef.current.remove(clonedScene)
       }
-      // 釋放資源
-      clonedScene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.geometry.dispose()
-          // 不釋放材質，因為可能被共用
-        }
-      })
+      // Do not dispose geometry as it is shared/cached by useGLTF
     }
   }, [scene, onLoaded, scale, rotation, position])
 

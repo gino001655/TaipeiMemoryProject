@@ -30,6 +30,14 @@ function LoadingFallback() {
 }
 
 function App() {
+  // Hack: Force reload on first visit to fix potential initialization issues
+  // This is a "simple solution" requested to ensure 3D context loads correctly
+  if (!sessionStorage.getItem('has_forced_reload')) {
+    sessionStorage.setItem('has_forced_reload', 'true');
+    window.location.reload();
+    return null; // Render nothing while reloading
+  }
+
   return (
     <Router>
       <Suspense fallback={<LoadingFallback />}>
